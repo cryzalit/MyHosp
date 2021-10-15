@@ -1,11 +1,16 @@
 package com.opylypiv.myhosp;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,10 +18,10 @@ import java.util.ArrayList;
 
 public class DoctorListAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ArrayList<String>> mGroups;
+    private ArrayList<ArrayList<Doctor>> mGroups;
     private Context mContext;
 
-    public DoctorListAdapter (Context context,ArrayList<ArrayList<String>> groups){
+    public DoctorListAdapter (Context context,ArrayList<ArrayList<Doctor>> groups){
         mContext = context;
         mGroups = groups;
     }
@@ -86,18 +91,31 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.child_view, null);
         }
-
-        TextView textChild = (TextView) convertView.findViewById(R.id.textChild);
-        textChild.setText(mGroups.get(groupPosition).get(childPosition));
-
-        Button button = (Button)convertView.findViewById(R.id.buttonChild);
-        button.setOnClickListener(new View.OnClickListener() {
+        LinearLayout child_item = (LinearLayout) convertView.findViewById(R.id.child_item);
+        child_item.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(mContext,"button is pressed",5000).show();
+            public void onClick(View v) {
+                Intent intent= new Intent(mContext, DoctorProfile.class);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("id",mGroups.get(groupPosition).get(childPosition).getId());
+                intent.putExtra("name",mGroups.get(groupPosition).get(childPosition).getFullname());
+                intent.putExtra("spec",mGroups.get(groupPosition).get(childPosition).getSpec());
+                intent.putExtra("point",mGroups.get(groupPosition).get(childPosition).getPoint()+"");
+                intent.putExtra("photo",mGroups.get(groupPosition).get(childPosition).getPhoto());
+
+                mContext.startActivity(intent);
             }
         });
 
+        TextView doctor_fullname = (TextView) convertView.findViewById(R.id.name_doctor);
+        TextView doctor_pro = (TextView) convertView.findViewById(R.id.profession_doctor);
+        RatingBar point = (RatingBar) convertView.findViewById(R.id.ratingbar_doctor);
+
+        doctor_fullname.setText(mGroups.get(groupPosition).get(childPosition).getFullname());
+        doctor_pro.setText(mGroups.get(groupPosition).get(childPosition).getSpec());
+        point.setMax(5);
+        point.setStepSize(.5f);
+        point.setRating(Float.parseFloat(mGroups.get(groupPosition).get(childPosition).getPoint()+""));
         return convertView;
     }
 
