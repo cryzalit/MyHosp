@@ -1,13 +1,11 @@
 package com.opylypiv.myhosp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ExpandableListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +13,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class DoctorList extends AppCompatActivity {
     ExpandableListView listView;
@@ -26,7 +26,7 @@ public class DoctorList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_list);
-        listView = (ExpandableListView)findViewById(R.id.exListView);
+        listView = findViewById(R.id.exListView);
         FirebaseApp.initializeApp(this);
 
 
@@ -86,6 +86,8 @@ public class DoctorList extends AppCompatActivity {
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(";");
                 Doctor doctor = new Doctor();
+                List<Map<String, Doctor>> doctorlist = new ArrayList<>();
+
                 doctor.setId(tokens[0]);
                 doctor.setIdhosp(tokens[1]);
                 doctor.setFullname(tokens[2]);
@@ -93,8 +95,6 @@ public class DoctorList extends AppCompatActivity {
                 doctor.setCodespec(tokens[4]);
                 doctor.setPhotoURL(tokens[5]);
                 doctor.setPoint(Double.parseDouble(tokens[6]));
-                anesthesiologist.add(doctor);
-                surgeon.add(doctor);
 
             }
         }

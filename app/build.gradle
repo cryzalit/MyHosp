@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         multiDexEnabled true
-        applicationId "com.opylypiv.myhospital"
+        applicationId "com.opylypiv.myhosp"
         minSdk 19
         targetSdk 31
         versionCode 1
