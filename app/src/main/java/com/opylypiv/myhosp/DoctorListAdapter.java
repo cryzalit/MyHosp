@@ -8,20 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DoctorListAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ArrayList<Doctor>> mGroups;
-    private Context mContext;
+    private final ArrayList<ArrayList<Doctor>> mGroups;
+    private final Context mContext;
 
-    public DoctorListAdapter (Context context,ArrayList<ArrayList<Doctor>> groups){
+    public DoctorListAdapter(Context context, ArrayList<ArrayList<Doctor>> groups) {
         mContext = context;
         mGroups = groups;
     }
@@ -65,20 +65,32 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                              ViewGroup parent) {
 
+        Map<String, Integer> dayMap;
+
+        dayMap = new HashMap<String, Integer>();
+        dayMap.put("day1", R.drawable.day1);
+        dayMap.put("day2", R.drawable.day2);
+        dayMap.put("day3", R.drawable.day3);
+        dayMap.put("day4", R.drawable.day4);
+        dayMap.put("day5", R.drawable.day5);
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.group_view, null);
         }
 
-        if (isExpanded){
+        if (isExpanded) {
             //Изменяем что-нибудь, если текущая Group раскрыта
+        } else {
+
         }
-        else{
-            //Изменяем что-нибудь, если текущая Group скрыта
+        TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
+        if (mGroups.get(groupPosition).isEmpty()) {
+        } else {
+            textGroup.setText(mGroups.get(groupPosition).get(0).getSpec());
+
         }
 
-        TextView textGroup = (TextView) convertView.findViewById(R.id.textGroup);
-        textGroup.setText("Group " + Integer.toString(groupPosition));
 
         return convertView;
 

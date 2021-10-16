@@ -13,14 +13,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class DoctorList extends AppCompatActivity {
     ExpandableListView listView;
     String line = "";
-    ArrayList<ArrayList<Doctor>> doctorgroups = new ArrayList<ArrayList<Doctor>>(200);
-
+    ArrayList<ArrayList<Doctor>> doctorgroups = new ArrayList<>();
+    Doctor doctor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +32,11 @@ public class DoctorList extends AppCompatActivity {
         //Создаем набор данных для адаптера
 
     }
-    public void readDoctorsData()  {
+
+    public void readDoctorsData() {
         InputStream is = getResources().openRawResource(R.raw.myhosp_data);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("Windows-1251")));
+
         ArrayList<Doctor> anesthesiologist = new ArrayList<Doctor>();
         ArrayList<Doctor> bacteriologist = new ArrayList<Doctor>();
         ArrayList<Doctor> cardiologist = new ArrayList<Doctor>();
@@ -78,16 +78,10 @@ public class DoctorList extends AppCompatActivity {
         ArrayList<Doctor> rheumatologist = new ArrayList<Doctor>();
         ArrayList<Doctor> surgeon = new ArrayList<Doctor>();
         ArrayList<Doctor> urologist = new ArrayList<Doctor>();
-
-
-
-
         try {
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split(";");
-                Doctor doctor = new Doctor();
-                List<Map<String, Doctor>> doctorlist = new ArrayList<>();
-
+                doctor = new Doctor();
                 doctor.setId(tokens[0]);
                 doctor.setIdhosp(tokens[1]);
                 doctor.setFullname(tokens[2]);
@@ -95,18 +89,57 @@ public class DoctorList extends AppCompatActivity {
                 doctor.setCodespec(tokens[4]);
                 doctor.setPhotoURL(tokens[5]);
                 doctor.setPoint(Double.parseDouble(tokens[6]));
+                switch (doctor.getCodespec()) {
+                    case "anesthesiologist":
+                        anesthesiologist.add(doctor);
+                        break;
+                    case "bacteriologist":
+                        bacteriologist.add(doctor);
+                        break;
+                    case "cardiologist":
+                        cardiologist.add(doctor);
+                        break;
+                    case "CEO":
+                        CEO.add(doctor);
+                        break;
+                    case "dentist":
+                        dentist.add(doctor);
+                        break;
+                    case "dermatologist":
+                        dermatologist.add(doctor);
+                        break;
+                    case "dermatovenereologist":
+                        dermatovenereologist.add(doctor);
+                        break;
+
+                    case "endocrinologist":
+                        endocrinologist.add(doctor);
+                        break;
+                    case "endoscopist":
+                        endoscopist.add(doctor);
+                        break;
+                    case "ginekologist":
+                        ginekologist.add(doctor);
+                        break;
+                }
 
             }
-        }
-        catch (IOException e){
+
+
+        } catch (IOException e) {
 
         }
-
-
-
         doctorgroups.add(anesthesiologist);
-        doctorgroups.add(surgeon);
-        //Создаем адаптер и передаем context и список с данными
+        doctorgroups.add(bacteriologist);
+        doctorgroups.add(CEO);
+        doctorgroups.add(dentist);
+        doctorgroups.add(dermatologist);
+        doctorgroups.add(dermatovenereologist);
+        doctorgroups.add(usd);
+        doctorgroups.add(endocrinologist);
+        doctorgroups.add(endoscopist);
+        doctorgroups.add(ginekologist);
+
         DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
         listView.setAdapter(adapter);
     }
