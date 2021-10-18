@@ -68,11 +68,11 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         Map<String, Integer> dayMap;
 
         dayMap = new HashMap<String, Integer>();
-        dayMap.put("day1", R.drawable.day1);
-        dayMap.put("day2", R.drawable.day2);
-        dayMap.put("day3", R.drawable.day3);
-        dayMap.put("day4", R.drawable.day4);
-        dayMap.put("day5", R.drawable.day5);
+        dayMap.put("day1", R.drawable.ic_launcher_background);
+        dayMap.put("day2", R.drawable.ic_launcher_background);
+        dayMap.put("day3", R.drawable.ic_launcher_background);
+        dayMap.put("day4", R.drawable.ic_launcher_background);
+        dayMap.put("day5", R.drawable.ic_launcher_background);
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -111,7 +111,6 @@ public class DoctorList extends AppCompatActivity {
                     case "dermatovenereologist":
                         dermatovenereologist.add(doctor);
                         break;
-
                     case "endocrinologist":
                         endocrinologist.add(doctor);
                         break;
@@ -121,6 +120,89 @@ public class DoctorList extends AppCompatActivity {
                     case "ginekologist":
                         ginekologist.add(doctor);
                         break;
+                    case "infectious":
+                        infectious.add(doctor);
+                        break;
+                    case "medical_director":
+                        medical_director.add(doctor);
+                        break;
+                    case "narcologist":
+                        narcologist.add(doctor);
+                        break;
+                    case "nephrologist":
+                        nephrologist.add(doctor);
+                        break;
+                    case "neurologist":
+                        neurologist.add(doctor);
+                        break;
+                    case "gynecologist":
+                        gynecologist.add(doctor);
+                        break;
+                    case "ophthalmologist":
+                        ophthalmologist.add(doctor);
+                        break;
+                    case "traumatologist":
+                        traumatologist.add(doctor);
+                        break;
+                    case "otolaryngologist":
+                        otolaryngologist.add(doctor);
+                        break;
+                    case "pediatric_gynecologist":
+                        pediatric_gynecologist.add(doctor);
+                        break;
+                    case "pediatric_anesthesiologist":
+                        pediatric_anesthesiologist.add(doctor);
+                        break;
+                    case "pediatric_cardiorheumatologist":
+                        pediatric_cardiorheumatologist.add(doctor);
+                        break;
+                    case "pediatric_dentist":
+                        pediatric_dentist.add(doctor);
+                        break;
+                    case "pediatric_dermatovenereologist":
+                        pediatric_dermatovenereologist.add(doctor);
+                        break;
+                    case "pediatric_endocrinologist":
+                        pediatric_endocrinologist.add(doctor);
+                        break;
+                    case "pediatric_neurologist":
+                        pediatric_endocrinologist.add(doctor);
+                        break;
+                    case "pediatric_ophthalmologist":
+                        pediatric_endocrinologist.add(doctor);
+                        break;
+                    case "pediatric_psychiatrist":
+                        pediatric_psychiatrist.add(doctor);
+                        break;
+                    case "pediatrician":
+                        pediatrician.add(doctor);
+                        break;
+                    case "pediatrician_hospital":
+                        pediatrician.add(doctor);
+                        break;
+                    case "pediatrician_neonatologist":
+                        pediatrician_neonatologist.add(doctor);
+                        break;
+                    case "physician":
+                        physician.add(doctor);
+                        break;
+                    case "physiotherapist":
+                        physiotherapist.add(doctor);
+                        break;
+                    case "radiologist":
+                        radiologist.add(doctor);
+                        break;
+
+                    case "rheumatologist":
+                        rheumatologist.add(doctor);
+                        break;
+                    case "surgeon":
+                        surgeon.add(doctor);
+                        break;
+                    case "urologist":
+                        urologist.add(doctor);
+                        break;
+
                 }
 
             }
@@ -139,6 +221,31 @@ public class DoctorList extends AppCompatActivity {
         doctorgroups.add(endocrinologist);
         doctorgroups.add(endoscopist);
         doctorgroups.add(ginekologist);
+        doctorgroups.add(nephrologist);
+        doctorgroups.add(neurologist);
+        doctorgroups.add(gynecologist);
+        doctorgroups.add(ophthalmologist);
+        doctorgroups.add(traumatologist);
+        doctorgroups.add(otolaryngologist);
+        doctorgroups.add(pediatric_gynecologist);
+        doctorgroups.add(pediatric_anesthesiologist);
+        doctorgroups.add(pediatric_cardiorheumatologist);
+        doctorgroups.add(pediatric_dentist);
+        doctorgroups.add(pediatric_dermatovenereologist);
+        doctorgroups.add(pediatric_endocrinologist);
+        doctorgroups.add(pediatric_neurologist);
+        doctorgroups.add(pediatric_ophthalmologist);
+        doctorgroups.add(pediatric_psychiatrist);
+        doctorgroups.add(pediatrician);
+        doctorgroups.add(pediatrician_hospital);
+        doctorgroups.add(pediatrician_neonatologist);
+        doctorgroups.add(physician);
+        doctorgroups.add(physiotherapist);
+        doctorgroups.add(radiologist);
+        doctorgroups.add(rheumatologist);
+        doctorgroups.add(surgeon);
+        doctorgroups.add(urologist);
+
 
         DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
         listView.setAdapter(adapter);
