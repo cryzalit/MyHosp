@@ -50,7 +50,6 @@ public class DoctorList extends AppCompatActivity {
         ArrayList<Doctor> usd = new ArrayList<Doctor>();
         ArrayList<Doctor> endocrinologist = new ArrayList<Doctor>();
         ArrayList<Doctor> endoscopist = new ArrayList<Doctor>();
-        ArrayList<Doctor> ginekologist = new ArrayList<Doctor>();
         ArrayList<Doctor> infectious = new ArrayList<Doctor>();
         ArrayList<Doctor> medical_director = new ArrayList<Doctor>();
         ArrayList<Doctor> narcologist = new ArrayList<Doctor>();
@@ -117,8 +116,8 @@ public class DoctorList extends AppCompatActivity {
                     case "endoscopist":
                         endoscopist.add(doctor);
                         break;
-                    case "ginekologist":
-                        ginekologist.add(doctor);
+                    case "gynecologist":
+                        gynecologist.add(doctor);
                         break;
                     case "infectious":
                         infectious.add(doctor);
@@ -134,9 +133,6 @@ public class DoctorList extends AppCompatActivity {
                         break;
                     case "neurologist":
                         neurologist.add(doctor);
-                        break;
-                    case "gynecologist":
-                        gynecologist.add(doctor);
                         break;
                     case "ophthalmologist":
                         ophthalmologist.add(doctor);
@@ -192,7 +188,6 @@ public class DoctorList extends AppCompatActivity {
                     case "radiologist":
                         radiologist.add(doctor);
                         break;
-
                     case "rheumatologist":
                         rheumatologist.add(doctor);
                         break;
@@ -208,8 +203,8 @@ public class DoctorList extends AppCompatActivity {
             }
 
 
-        } catch (IOException e) {
-
+        } catch (NullPointerException | IOException ex) {
+            return;
         }
         doctorgroups.add(anesthesiologist);
         doctorgroups.add(bacteriologist);
@@ -217,13 +212,11 @@ public class DoctorList extends AppCompatActivity {
         doctorgroups.add(dentist);
         doctorgroups.add(dermatologist);
         doctorgroups.add(dermatovenereologist);
-        doctorgroups.add(usd);
         doctorgroups.add(endocrinologist);
         doctorgroups.add(endoscopist);
-        doctorgroups.add(ginekologist);
+        doctorgroups.add(gynecologist);
         doctorgroups.add(nephrologist);
         doctorgroups.add(neurologist);
-        doctorgroups.add(gynecologist);
         doctorgroups.add(ophthalmologist);
         doctorgroups.add(traumatologist);
         doctorgroups.add(otolaryngologist);
