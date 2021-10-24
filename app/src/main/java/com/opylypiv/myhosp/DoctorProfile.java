@@ -1,16 +1,12 @@
 package com.opylypiv.myhosp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DoctorProfile extends AppCompatActivity {
     String currentid;
@@ -39,7 +35,7 @@ public class DoctorProfile extends AppCompatActivity {
         currentphoto = intent.getStringExtra("photo");
         name.setText(currentfullname);
         profession.setText(currentspec);
-        point.setRating(Float.parseFloat(currentpoint.trim()));
+        point.setRating(Float.parseFloat(currentpoint.trim() + ".0"));
 
 
     }

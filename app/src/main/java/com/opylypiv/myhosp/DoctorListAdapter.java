@@ -2,11 +2,9 @@ package com.opylypiv.myhosp;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +41,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
+
         return mGroups.get(groupPosition);
     }
 
@@ -66,10 +65,16 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                              ViewGroup parent) {
+
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.group_view, null);
+        }
+
+
         Map<String, Drawable> dayMap = new HashMap<>();
         dayMap.put("anesthesiologist", mContext.getResources().getDrawable(R.drawable.anesthesiologist));
         dayMap.put("bacteriologist", mContext.getResources().getDrawable(R.drawable.bacteriologist));
@@ -93,35 +98,17 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         dayMap.put("surgeon", mContext.getResources().getDrawable(R.drawable.surgeon));
         dayMap.put("urologist", mContext.getResources().getDrawable(R.drawable.urologist));
 
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.group_view, null);
-        }
 
-        if (isExpanded) {
-            //Изменяем что-нибудь, если текущая Group раскрыта
-        } else {
-
-        }
         TextView textGroup = convertView.findViewById(R.id.textGroup);
         ImageView imagegroup = convertView.findViewById(R.id.imagegroup);
-
-        if (mGroups.get(groupPosition).isEmpty()) {
-            return null;
-        } else {
-            textGroup.setText(mGroups.get(groupPosition).get(0).getSpec());
-            try {
-                imagegroup.setImageDrawable(dayMap.get(mGroups.get(groupPosition).get(0).getCodespec().trim()));
-                Log.d("spec", mGroups.get(groupPosition).get(0).getCodespec().trim());
-            } catch (NullPointerException ex) {
-                imagegroup.setImageResource(R.drawable.ceo);
-            }
-        }
-
+        textGroup.setText(mGroups.get(groupPosition).get(0).getSpec());
+        imagegroup.setImageDrawable(dayMap.get(mGroups.get(groupPosition).get(0).codespec));
 
         return convertView;
 
+
     }
+
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
@@ -131,20 +118,6 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.child_view, null);
         }
         LinearLayout child_item = convertView.findViewById(R.id.child_item);
-        child_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(mContext, DoctorProfile.class);
-                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id", mGroups.get(groupPosition).get(childPosition).getId());
-                intent.putExtra("name", mGroups.get(groupPosition).get(childPosition).getFullname());
-                intent.putExtra("spec", mGroups.get(groupPosition).get(childPosition).getSpec());
-                intent.putExtra("point", mGroups.get(groupPosition).get(childPosition).getPoint() + "");
-                intent.putExtra("photo", mGroups.get(groupPosition).get(childPosition).getPhoto());
-
-                mContext.startActivity(intent);
-            }
-        });
 
         TextView doctor_fullname = convertView.findViewById(R.id.name_doctor);
         TextView doctor_pro = convertView.findViewById(R.id.profession_doctor);
@@ -154,8 +127,23 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         doctor_pro.setText(mGroups.get(groupPosition).get(childPosition).getSpec());
         point.setMax(5);
         point.setStepSize(.5f);
-        point.setRating(Float.parseFloat(mGroups.get(groupPosition).get(childPosition).getPoint() + ""));
+
+        child_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DoctorProfile.class);
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("id", mGroups.get(groupPosition).get(childPosition).getId());
+                intent.putExtra("name", mGroups.get(groupPosition).get(childPosition).getFullname());
+                intent.putExtra("spec", mGroups.get(groupPosition).get(childPosition).getSpec());
+                intent.putExtra("photo", mGroups.get(groupPosition).get(childPosition).getPhotoURL());
+                intent.putExtra("point", mGroups.get(groupPosition).get(childPosition).getPoint());
+
+                mContext.startActivity(intent);
+            }
+        });
         return convertView;
+
     }
 
     @Override

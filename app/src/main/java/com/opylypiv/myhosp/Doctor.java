@@ -1,38 +1,51 @@
 package com.opylypiv.myhosp;
 
-import android.graphics.drawable.Drawable;
-
 public class Doctor {
-    String id;
-    String id_hosp;
+    long id;
+    long idhosp;
+    int point;
+    double points;
+    int sumpoints;
     String fullname;
     String spec;
     String codespec;
     String photoURL;
-    Double point;
 
-    public Double getPoint() {
+
+    public int getPoint() {
         return point;
     }
 
-    public void setPoint(Double point) {
-        this.point = point;
+    public double getPoints() {
+        return points;
     }
 
-    public String getId() {
+    public void setPoints(double points) {
+        this.points = points;
+    }
+
+    public long getSumpoints() {
+        return sumpoints;
+    }
+
+    public void setSumpoints(int sumpoints) {
+        this.sumpoints = sumpoints;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getIdhosp() {
-        return id_hosp;
+    public long getIdhosp() {
+        return idhosp;
     }
 
-    public void setIdhosp(String id_hosp) {
-        this.id_hosp = id_hosp;
+    public void setIdhosp(long idhosp) {
+        this.idhosp = idhosp;
     }
 
     public String getFullname() {
@@ -59,15 +72,20 @@ public class Doctor {
         this.codespec = codespec;
     }
 
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
     }
 
-    public String getPhoto() {
-        return photoURL;
+    public void hashmap() {
+
     }
 
-    public void String(String photoURL) {
-        this.photoURL = photoURL;
-    }
 }
