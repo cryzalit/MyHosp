@@ -3,7 +3,7 @@ package com.opylypiv.myhosp;
 public class Doctor {
     long id;
     long idhosp;
-    int point;
+    float point;
     double points;
     int sumpoints;
     String fullname;
@@ -12,7 +12,7 @@ public class Doctor {
     String photoURL;
 
 
-    public int getPoint() {
+    public float getPoint() {
         return point;
     }
 
@@ -76,7 +76,7 @@ public class Doctor {
         return photoURL;
     }
 
-    public void setPoint(int point) {
+    public void setPoint(float point) {
         this.point = point;
     }
 

@@ -248,9 +248,10 @@ public class DoctorList extends AppCompatActivity {
 
 
                 });
-
         DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
         listView.setAdapter(adapter);
+
+
     }
 
 

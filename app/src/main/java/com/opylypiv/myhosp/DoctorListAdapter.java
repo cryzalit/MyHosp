@@ -5,6 +5,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,6 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         dayMap.put("surgeon", mContext.getResources().getDrawable(R.drawable.surgeon));
         dayMap.put("urologist", mContext.getResources().getDrawable(R.drawable.urologist));
 
-
         TextView textGroup = convertView.findViewById(R.id.textGroup);
         ImageView imagegroup = convertView.findViewById(R.id.imagegroup);
         textGroup.setText(mGroups.get(groupPosition).get(0).getSpec());
@@ -126,18 +126,23 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         doctor_fullname.setText(mGroups.get(groupPosition).get(childPosition).getFullname());
         doctor_pro.setText(mGroups.get(groupPosition).get(childPosition).getSpec());
         point.setMax(5);
-        point.setStepSize(.5f);
+        point.setStepSize(.1f);
+        point.setRating((mGroups.get(groupPosition).get(childPosition).getPoint()));
+
+        Log.d("point", mGroups.get(groupPosition).get(childPosition).getPoint() + "");
 
         child_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(mContext, DoctorProfile.class);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("id", mGroups.get(groupPosition).get(childPosition).getId());
+                intent.putExtra("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp());
                 intent.putExtra("name", mGroups.get(groupPosition).get(childPosition).getFullname());
                 intent.putExtra("spec", mGroups.get(groupPosition).get(childPosition).getSpec());
                 intent.putExtra("photo", mGroups.get(groupPosition).get(childPosition).getPhotoURL());
-                intent.putExtra("point", mGroups.get(groupPosition).get(childPosition).getPoint());
+                intent.putExtra("point", mGroups.get(groupPosition).get(childPosition).getPoint() + "");
 
                 mContext.startActivity(intent);
             }
