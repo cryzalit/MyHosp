@@ -1,7 +1,6 @@
 package com.opylypiv.myhosp;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ExpandableListView;
 
 import androidx.annotation.NonNull;
@@ -29,47 +28,7 @@ public class DoctorList extends AppCompatActivity {
 
     FirebaseFirestore db;
     ArrayList<ArrayList<Doctor>> doctorgroups = new ArrayList<>();
-    ArrayList<Doctor> anesthesiologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> bacteriologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> cardiologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> ceo = new ArrayList<Doctor>();
-    ArrayList<Doctor> dentist = new ArrayList<Doctor>();
-    ArrayList<Doctor> dentist_orthodontist = new ArrayList<Doctor>();
-    ArrayList<Doctor> dentist_surgeon = new ArrayList<Doctor>();
-    ArrayList<Doctor> dentist_therapist = new ArrayList<Doctor>();
-    ArrayList<Doctor> dermatologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> dermatovenereologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> usd = new ArrayList<Doctor>();
-    ArrayList<Doctor> endocrinologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> endoscopist = new ArrayList<Doctor>();
-    ArrayList<Doctor> ginekologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> infectious = new ArrayList<Doctor>();
-    ArrayList<Doctor> medical_director = new ArrayList<Doctor>();
-    ArrayList<Doctor> narcologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> nephrologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> neurologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> gynecologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> ophthalmologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> traumatologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> otolaryngologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_gynecologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_anesthesiologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_cardiorheumatologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_dentist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_dermatovenereologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_endocrinologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_neurologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_ophthalmologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatric_psychiatrist = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatrician = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatrician_hospital = new ArrayList<Doctor>();
-    ArrayList<Doctor> pediatrician_neonatologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> physician = new ArrayList<Doctor>();
-    ArrayList<Doctor> physiotherapist = new ArrayList<Doctor>();
-    ArrayList<Doctor> radiologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> rheumatologist = new ArrayList<Doctor>();
-    ArrayList<Doctor> surgeon = new ArrayList<Doctor>();
-    ArrayList<Doctor> urologist = new ArrayList<Doctor>();
+    public static ArrayList<Doctor> alldoctors = new ArrayList<Doctor>();
 
 
     @Override
@@ -87,7 +46,49 @@ public class DoctorList extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                ArrayList<Doctor> anesthesiologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> bacteriologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> cardiologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> ceo = new ArrayList<Doctor>();
+                                ArrayList<Doctor> dentist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> dentist_orthodontist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> dentist_surgeon = new ArrayList<Doctor>();
+                                ArrayList<Doctor> dentist_therapist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> dermatologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> dermatovenereologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> usd = new ArrayList<Doctor>();
+                                ArrayList<Doctor> endocrinologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> endoscopist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> ginekologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> infectious = new ArrayList<Doctor>();
+                                ArrayList<Doctor> medical_director = new ArrayList<Doctor>();
+                                ArrayList<Doctor> narcologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> nephrologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> neurologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> gynecologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> ophthalmologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> traumatologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> otolaryngologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_gynecologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_anesthesiologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_cardiorheumatologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_dentist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_dermatovenereologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_endocrinologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_neurologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_ophthalmologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatric_psychiatrist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatrician = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatrician_hospital = new ArrayList<Doctor>();
+                                ArrayList<Doctor> pediatrician_neonatologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> physician = new ArrayList<Doctor>();
+                                ArrayList<Doctor> physiotherapist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> radiologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> rheumatologist = new ArrayList<Doctor>();
+                                ArrayList<Doctor> surgeon = new ArrayList<Doctor>();
+                                ArrayList<Doctor> urologist = new ArrayList<Doctor>();
                                 Doctor doctor = document.toObject(Doctor.class);
+                                alldoctors.add(doctor);
                                 switch (doctor.getCodespec()) {
                                     case "anesthesiologist":
                                         anesthesiologist.add(doctor);
@@ -197,61 +198,56 @@ public class DoctorList extends AppCompatActivity {
                                     case "urologist":
                                         urologist.add(doctor);
                                         break;
-
                                 }
 
+                                doctorgroups.add(anesthesiologist);
+                                doctorgroups.add(bacteriologist);
+                                doctorgroups.add(ceo);
+                                doctorgroups.add(dentist);
+                                doctorgroups.add(dermatologist);
+                                doctorgroups.add(dermatovenereologist);
+                                doctorgroups.add(endocrinologist);
+                                doctorgroups.add(endoscopist);
+                                doctorgroups.add(gynecologist);
+                                doctorgroups.add(nephrologist);
+                                doctorgroups.add(neurologist);
+                                doctorgroups.add(ophthalmologist);
+                                doctorgroups.add(traumatologist);
+                                doctorgroups.add(otolaryngologist);
+                                doctorgroups.add(pediatric_gynecologist);
+                                doctorgroups.add(pediatric_anesthesiologist);
+                                doctorgroups.add(pediatric_cardiorheumatologist);
+                                doctorgroups.add(pediatric_dentist);
+                                doctorgroups.add(pediatric_dermatovenereologist);
+                                doctorgroups.add(pediatric_endocrinologist);
+                                doctorgroups.add(pediatric_neurologist);
+                                doctorgroups.add(pediatric_ophthalmologist);
+                                doctorgroups.add(pediatric_psychiatrist);
+                                doctorgroups.add(pediatrician);
+                                doctorgroups.add(pediatrician_hospital);
+                                doctorgroups.add(pediatrician_neonatologist);
+                                doctorgroups.add(physician);
+                                doctorgroups.add(physiotherapist);
+                                doctorgroups.add(radiologist);
+                                doctorgroups.add(rheumatologist);
+                                doctorgroups.add(surgeon);
+                                doctorgroups.add(urologist);
+                                for (Iterator<ArrayList<Doctor>> it = doctorgroups.iterator(); it
+                                        .hasNext(); ) {
+                                    ArrayList<Doctor> elem = it.next();
+                                    if (elem.isEmpty()) {
+                                        it.remove();
+                                    }
+                                }
+                            }
 
-                            }
-                        } else {
-                            Log.d("ERROR", "Error getting documents: ", task.getException());
+
                         }
-                        doctorgroups.add(anesthesiologist);
-                        doctorgroups.add(bacteriologist);
-                        doctorgroups.add(ceo);
-                        doctorgroups.add(dentist);
-                        doctorgroups.add(dermatologist);
-                        doctorgroups.add(dermatovenereologist);
-                        doctorgroups.add(endocrinologist);
-                        doctorgroups.add(endoscopist);
-                        doctorgroups.add(gynecologist);
-                        doctorgroups.add(nephrologist);
-                        doctorgroups.add(neurologist);
-                        doctorgroups.add(ophthalmologist);
-                        doctorgroups.add(traumatologist);
-                        doctorgroups.add(otolaryngologist);
-                        doctorgroups.add(pediatric_gynecologist);
-                        doctorgroups.add(pediatric_anesthesiologist);
-                        doctorgroups.add(pediatric_cardiorheumatologist);
-                        doctorgroups.add(pediatric_dentist);
-                        doctorgroups.add(pediatric_dermatovenereologist);
-                        doctorgroups.add(pediatric_endocrinologist);
-                        doctorgroups.add(pediatric_neurologist);
-                        doctorgroups.add(pediatric_ophthalmologist);
-                        doctorgroups.add(pediatric_psychiatrist);
-                        doctorgroups.add(pediatrician);
-                        doctorgroups.add(pediatrician_hospital);
-                        doctorgroups.add(pediatrician_neonatologist);
-                        doctorgroups.add(physician);
-                        doctorgroups.add(physiotherapist);
-                        doctorgroups.add(radiologist);
-                        doctorgroups.add(rheumatologist);
-                        doctorgroups.add(surgeon);
-                        doctorgroups.add(urologist);
-                        for (Iterator<ArrayList<Doctor>> it = doctorgroups.iterator(); it
-                                .hasNext(); ) {
-                            ArrayList<Doctor> elem = it.next();
-                            if (elem.isEmpty()) {
-                                it.remove();
-                            }
-                        }
+                        DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
+                        listView.setAdapter(adapter);
+
                     }
-
-
                 });
-        DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
-        listView.setAdapter(adapter);
-
-
     }
 
 
@@ -265,8 +261,8 @@ public class DoctorList extends AppCompatActivity {
                 String[] tokens = line.split(";");
 
                 Doctor doctor = new Doctor();
-                doctor.setId(Long.parseLong(tokens[0]));
-                doctor.setIdhosp(Long.parseLong(tokens[1]));
+                doctor.setId(Integer.parseInt(tokens[0]));
+                doctor.setIdhosp(Integer.parseInt(tokens[1]));
                 doctor.setFullname(tokens[2]);
                 doctor.setSpec(tokens[3]);
                 doctor.setCodespec(tokens[4]);

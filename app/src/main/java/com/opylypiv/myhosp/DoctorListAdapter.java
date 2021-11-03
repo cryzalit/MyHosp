@@ -119,7 +119,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         }
         LinearLayout child_item = convertView.findViewById(R.id.child_item);
 
-        TextView doctor_fullname = convertView.findViewById(R.id.name_doctor);
+        TextView doctor_fullname = convertView.findViewById(R.id.author_name);
         TextView doctor_pro = convertView.findViewById(R.id.profession_doctor);
         RatingBar point = convertView.findViewById(R.id.ratingbar_doctor);
 
@@ -137,12 +137,13 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
                 Intent intent = new Intent(mContext, DoctorProfile.class);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id", mGroups.get(groupPosition).get(childPosition).getId());
+                intent.putExtra("id", mGroups.get(groupPosition).get(childPosition).getId() + "");
                 intent.putExtra("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp());
                 intent.putExtra("name", mGroups.get(groupPosition).get(childPosition).getFullname());
                 intent.putExtra("spec", mGroups.get(groupPosition).get(childPosition).getSpec());
                 intent.putExtra("photo", mGroups.get(groupPosition).get(childPosition).getPhotoURL());
                 intent.putExtra("point", mGroups.get(groupPosition).get(childPosition).getPoint() + "");
+
 
                 mContext.startActivity(intent);
             }

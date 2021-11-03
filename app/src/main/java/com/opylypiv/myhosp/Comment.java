@@ -1,18 +1,38 @@
 package com.opylypiv.myhosp;
 
 public class Comment {
-    String id;
+    int id;
     String text;
     String point;
-    String iduser;
-    String iddoctor;
-    String idhosp;
+    int iduser;
+    int iddoctor;
+    int idhosp;
+    boolean isAnswer;
+    String answer;
 
-    public String getId() {
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public boolean getisAnswer() {
+        return isAnswer;
+    }
+
+    public void setisAnswer(boolean ansver) {
+        isAnswer = ansver;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -32,27 +52,27 @@ public class Comment {
         this.point = point;
     }
 
-    public String getIduser() {
+    public int getIduser() {
         return iduser;
     }
 
-    public void setIduser(String iduser) {
+    public void setIduser(int iduser) {
         this.iduser = iduser;
     }
 
-    public String getIddoctor() {
+    public int getIddoctor() {
         return iddoctor;
     }
 
-    public void setIddoctor(String iddoctor) {
+    public void setIddoctor(int iddoctor) {
         this.iddoctor = iddoctor;
     }
 
-    public String getIdhosp() {
+    public int getIdhosp() {
         return idhosp;
     }
 
-    public void setIdhosp(String idhosp) {
+    public void setIdhosp(int idhosp) {
         this.idhosp = idhosp;
     }
 }

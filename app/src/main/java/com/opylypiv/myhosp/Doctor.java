@@ -1,8 +1,8 @@
 package com.opylypiv.myhosp;
 
 public class Doctor {
-    long id;
-    long idhosp;
+    int id;
+    int idhosp;
     float point;
     double points;
     int sumpoints;
@@ -32,19 +32,19 @@ public class Doctor {
         this.sumpoints = sumpoints;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getIdhosp() {
+    public int getIdhosp() {
         return idhosp;
     }
 
-    public void setIdhosp(long idhosp) {
+    public void setIdhosp(int idhosp) {
         this.idhosp = idhosp;
     }
 
@@ -84,8 +84,11 @@ public class Doctor {
         this.photoURL = photoURL;
     }
 
-    public void hashmap() {
+    public Doctor getDoctorByID(int id) {
+        if (this.getId() == id) {
+            return this;
+        }
+        return null;
 
     }
-
 }
