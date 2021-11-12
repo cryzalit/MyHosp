@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHosp">
         <activity
+            android:name=".SingInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GoogleSignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Answer"
+            android:exported="false" />
+        <activity
             android:name=".DoctorProfile"
             android:exported="true" />
         <activity
@@ -23,7 +32,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

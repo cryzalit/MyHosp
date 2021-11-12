@@ -22,7 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DoctorProfile extends AppCompatActivity {
     int currentiddoctor;
@@ -40,6 +42,8 @@ public class DoctorProfile extends AppCompatActivity {
     FirebaseFirestore db_sendcoment;
     FirebaseFirestore db_getcomments;
     ListView listcomments;
+    ArrayList<Comment> comments;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +60,12 @@ public class DoctorProfile extends AppCompatActivity {
         textcomment = findViewById(R.id.comment);
         setpoint = findViewById(R.id.setRating);
         listcomments = findViewById(R.id.listcomments);
+        comments = new ArrayList<Comment>();
 
         Intent intent = getIntent();
         currentiddoctor = Integer.parseInt(intent.getStringExtra("id"));
+        currentidhosp = intent.getStringExtra("idhosp");
+
         getComments();
 
         for (int i = 150; i > 0; --i) {
@@ -68,12 +75,10 @@ public class DoctorProfile extends AppCompatActivity {
                 name.setText(DoctorList.alldoctors.get(i).getFullname() + "");
                 profession.setText(DoctorList.alldoctors.get(i).getSpec() + "");
                 point.setRating(Float.parseFloat(DoctorList.alldoctors.get(i).getPoint() + ""));
+
                 return;
             }
-
-
         }
-
     }
 
     public void getComments() {
@@ -85,32 +90,38 @@ public class DoctorProfile extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Comment c = document.toObject(Comment.class);
-                                ArrayList<Comment> comments = new ArrayList<>();
                                 comments.add(c);
-                                CommentsListAdapter cma = new CommentsListAdapter(DoctorProfile.this, comments);
-                                listcomments.setAdapter(cma);
-                                Log.d("Error", comments.get(0).iddoctor + "");
+                                Log.d("SCS", "DocumentSnapshot data: " + document.getData());
 
                             }
+                            CommentsListAdapter cma = new CommentsListAdapter(DoctorProfile.this, comments);
+                            listcomments.setAdapter(cma);
+
+
                         } else {
                             Log.d("Error", "Error getting documents: ", task.getException());
                         }
                     }
+
                 });
+
 
     }
 
 
     public void sendcomment(View v) {
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Comment comment = new Comment();
+        comment.setId(timestamp.getTime());
         comment.setText(textcomment.getText().toString().trim());
         comment.setPoint(setpoint.getRating() + "");
         comment.setIdhosp(currentdoc.getIdhosp());
-        comment.setIddoctor(currentdoc.getId());
+        comment.setIddoctor(currentiddoctor);
         comment.setIduser(currentuser);
         comment.setAnswer(null);
 
-        db_sendcoment.collection("comments").document(currentiddoctor + " " + currentidhosp)
+        db_sendcoment.collection("comments").document(timestamp.getTime() + "")
                 .set(comment)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
