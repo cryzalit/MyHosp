@@ -1,6 +1,7 @@
 package com.opylypiv.myhosp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ExpandableListView;
 
 import androidx.annotation.NonNull;
@@ -242,6 +243,8 @@ public class DoctorList extends AppCompatActivity {
                             }
 
 
+                        } else {
+                            Log.e("firebase", "Error getting data", task.getException());
                         }
                         DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
                         listView.setAdapter(adapter);

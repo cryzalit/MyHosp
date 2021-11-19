@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyHosp">
         <activity
-            android:name=".SingInActivity"
+            android:name=".SignInActivity"
             android:exported="false" />
         <activity
             android:name=".GoogleSignInActivity"

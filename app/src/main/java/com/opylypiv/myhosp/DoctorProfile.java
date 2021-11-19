@@ -105,7 +105,6 @@ public class DoctorProfile extends AppCompatActivity {
 
                 });
 
-
     }
 
 
@@ -136,6 +135,11 @@ public class DoctorProfile extends AppCompatActivity {
                     }
                 });
         onBackPressed();
+    }
+
+    public void goLogin(View view) {
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
     }
 
 
