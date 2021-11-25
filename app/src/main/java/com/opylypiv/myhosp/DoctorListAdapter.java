@@ -101,8 +101,18 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
         TextView textGroup = convertView.findViewById(R.id.textGroup);
         ImageView imagegroup = convertView.findViewById(R.id.imagegroup);
+        LinearLayout grouplayout = convertView.findViewById(R.id.groplayout);
+
         textGroup.setText(mGroups.get(groupPosition).get(0).getSpec());
         imagegroup.setImageDrawable(dayMap.get(mGroups.get(groupPosition).get(0).codespec));
+        grouplayout.setPadding(5, 5, 5, 5);
+
+        if (isExpanded) {
+            grouplayout.setBackgroundResource(R.drawable.drawablelist_selected);
+        } else {
+            grouplayout.setBackgroundResource(R.drawable.drawableitem);
+        }
+
 
         return convertView;
 
