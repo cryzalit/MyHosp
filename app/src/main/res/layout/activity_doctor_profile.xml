@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:fontFamily="@font/eukraine"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -52,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:fontFamily="@font/eukrainel"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -66,7 +68,7 @@
                 android:layout_marginBottom="3dp"
                 android:max="5"
                 android:maxHeight="70dp"
-                android:stepSize="0.5" />
+                android:stepSize="0.1" />
         </LinearLayout>
     </LinearLayout>
 
@@ -93,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
+            android:fontFamily="@font/eukrainel"
             android:hint="Залиште відгук про лікаря"
             android:inputType="textPersonName"
             android:onClick="goLogin" />
@@ -112,17 +115,12 @@
         android:layout_weight="8.5"
         android:orientation="vertical">
 
-        <ScrollView
+        <ListView
+            android:id="@+id/listcomments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp">
+            android:orientation="vertical" />
 
-            <ListView
-                android:id="@+id/listcomments"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical" />
-        </ScrollView>
     </LinearLayout>
 
 </LinearLayout>

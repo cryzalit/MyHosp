@@ -3,33 +3,27 @@ package com.opylypiv.myhosp;
 public class Doctor {
     int id;
     int idhosp;
-    float point;
+    double point;
     double points;
-    int sumpoints;
+    double sumpoints;
     String fullname;
     String spec;
     String codespec;
     String photoURL;
 
 
-    public float getPoint() {
+    public double getPoint() {
+        point = Float.parseFloat((sumpoints / points) + "");
         return point;
     }
 
-    public double getPoints() {
-        return points;
-    }
 
-    public void setPoints(double points) {
-        this.points = points;
-    }
+    public Doctor getDoctorByID(int id) {
+        if (this.getId() == id) {
+            return this;
+        }
+        return null;
 
-    public long getSumpoints() {
-        return sumpoints;
-    }
-
-    public void setSumpoints(int sumpoints) {
-        this.sumpoints = sumpoints;
     }
 
     public int getId() {
@@ -46,6 +40,26 @@ public class Doctor {
 
     public void setIdhosp(int idhosp) {
         this.idhosp = idhosp;
+    }
+
+    public void setPoint(double point) {
+        this.point = point;
+    }
+
+    public double getPoints() {
+        return points;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
+    }
+
+    public double getSumpoints() {
+        return sumpoints;
+    }
+
+    public void setSumpoints(double sumpoints) {
+        this.sumpoints = sumpoints;
     }
 
     public String getFullname() {
@@ -76,19 +90,7 @@ public class Doctor {
         return photoURL;
     }
 
-    public void setPoint(float point) {
-        this.point = point;
-    }
-
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
-    }
-
-    public Doctor getDoctorByID(int id) {
-        if (this.getId() == id) {
-            return this;
-        }
-        return null;
-
     }
 }

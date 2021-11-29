@@ -26,10 +26,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_weight="6.5"
+        android:fontFamily="@font/eukraine"
         android:foregroundGravity="center_vertical"
         android:gravity="center"
         android:padding="5dp"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="normal" />
 </LinearLayout>

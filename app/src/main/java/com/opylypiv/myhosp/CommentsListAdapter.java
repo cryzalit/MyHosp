@@ -57,12 +57,13 @@ public class CommentsListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.comment_view, parent, false);
         }
 
-
         Comment c = getComment(position);
         ((TextView) view.findViewById(R.id.author_name)).setText(c.getIduser() + "");
         ((TextView) view.findViewById(R.id.comment)).setText(c.getText());
         ((RatingBar) view.findViewById(R.id.pointofexistcomment)).setRating(Float.parseFloat(c.getPoint()));
         Button answer = view.findViewById(R.id.answerbutton);
+
+        Log.d("commment", c.getId() + "");
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +75,16 @@ public class CommentsListAdapter extends BaseAdapter {
             }
         });
 
-        if (c.isAnswer) {
-            ((TextView) view.findViewById(R.id.answer_comment)).setText(c.getAnswer());
+        if (c.isAnswer()) {
+            Log.d("answer", c.getTextanswer() + "");
+            Log.d("isanswer", c.isAnswer() + "");
+
+            ((TextView) view.findViewById(R.id.answer_comment)).setText(c.getTextanswer());
+
 
         } else {
             view.findViewById(R.id.ll_answer).setVisibility(View.GONE);
         }
-        Log.d("commment", c.getId() + "");
-
 
         return view;
 

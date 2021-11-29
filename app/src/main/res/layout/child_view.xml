@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:fontFamily="@font/eukraine"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -56,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:fontFamily="@font/eukrainel"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -63,13 +65,15 @@
 
             <RatingBar
                 android:id="@+id/ratingbar_doctor"
-                style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+                style="@android:style/Widget.Holo.Light.RatingBar.Indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:layout_weight="2"
                 android:max="5"
                 android:maxHeight="50dp"
+                android:progressTint="@color/orange"
                 android:stepSize="0.1" />
         </LinearLayout>
     </LinearLayout>

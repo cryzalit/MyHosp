@@ -7,26 +7,24 @@ public class Comment {
     int iduser;
     int iddoctor;
     int idhosp;
-    boolean isAnswer;
-    String answer;
+    boolean answer;
+    String textanswer;
 
-
-    public String getAnswer() {
+    public boolean isAnswer() {
         return answer;
     }
 
-    public boolean getisAnswer() {
-        return isAnswer;
+    public void setisAnswer(boolean isanswer) {
+        answer = isanswer;
     }
 
-    public void setisAnswer(boolean ansver) {
-        isAnswer = ansver;
+    public String getTextanswer() {
+        return textanswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setTextanswer(String textanswer) {
+        this.textanswer = textanswer;
     }
-
 
     public long getId() {
         return id;
@@ -75,4 +73,5 @@ public class Comment {
     public void setIdhosp(int idhosp) {
         this.idhosp = idhosp;
     }
+
 }

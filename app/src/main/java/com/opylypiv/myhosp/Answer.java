@@ -36,8 +36,8 @@ public class Answer extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseFirestore answer = FirebaseFirestore.getInstance();
                 Map<String, Object> answerdata = new HashMap<>();
-                answerdata.put("answer", etanswer.getText().toString());
-                answerdata.put("isAnswer", true);
+                answerdata.put("answer", true);
+                answerdata.put("textanswer", etanswer.getText().toString());
                 answer.collection("comments").document(iddocument).update(answerdata).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

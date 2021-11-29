@@ -10,6 +10,7 @@
         android:id="@+id/textauthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/eukraine"
         android:text="ВІДПОВІДЬ КОРИСТУВАЧУ, "
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -20,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="50"
+        android:fontFamily="@font/eukrainel"
         android:inputType="textPersonName"
         android:text="Name" />
 
@@ -27,5 +29,6 @@
         android:id="@+id/sendanswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:fontFamily="@font/eukraine"
+        android:text="ВІДПРАВИТИ" />
 </LinearLayout>

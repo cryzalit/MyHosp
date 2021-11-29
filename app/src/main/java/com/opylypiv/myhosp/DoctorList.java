@@ -283,4 +283,5 @@ public class DoctorList extends AppCompatActivity {
         }
 
     }
+
 }
