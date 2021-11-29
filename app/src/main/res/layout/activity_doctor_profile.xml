@@ -106,7 +106,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="sendcomment"
-            android:text="ВІДПРАВИТИ" />
+            android:text="ВІДПРАВИТИ"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout

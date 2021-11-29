@@ -8,6 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#F5B935</color>
+    <color name="mygreen">#08836a</color>
+    <color name="myred">#a90000</color>
+
+    #8f0000
 
 
 </resources>
