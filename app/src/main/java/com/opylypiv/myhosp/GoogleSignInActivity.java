@@ -1,6 +1,6 @@
 package com.opylypiv.myhosp;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,13 +23,17 @@ import com.google.firebase.auth.GoogleAuthProvider;
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
-public class GoogleSignInActivity extends Activity {
+public class GoogleSignInActivity extends SignInActivity {
 
     private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 9001;
+    private static final int RC_SIGN_IN = 103;
+    String default_web_client_id = "1031991691303-jar1g0shna914pspocf39b7no1th43m1.apps.googleusercontent.com";
+
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
+    FirebaseUser mUser;
+    ProgressDialog progressDialog;
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -40,30 +44,23 @@ public class GoogleSignInActivity extends Activity {
         // [START config_signin]
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken(default_web_client_id)
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        // [END config_signin]
 
-        // [START initialize_auth]
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
-    }
+        mUser = mAuth.getCurrentUser();
 
-    // [START on_start_check_user]
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-    // [END on_start_check_user]
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Google sing in ....");
+        progressDialog.show();
 
-    // [START onactivityresult]
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -77,14 +74,14 @@ public class GoogleSignInActivity extends Activity {
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
+                progressDialog.dismiss();
+                finish();
+
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
@@ -95,25 +92,25 @@ public class GoogleSignInActivity extends Activity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            progressDialog.dismiss();
                             updateUI(user);
+
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            progressDialog.dismiss();
+                            finish();
+                            // If sign in fails, display a message to the user.
                             updateUI(null);
                         }
                     }
                 });
     }
-    // [END auth_with_google]
 
-    // [START signin]
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-    // [END signin]
 
     private void updateUI(FirebaseUser user) {
+        Intent intent = new Intent(GoogleSignInActivity.this, DoctorList.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
 
     }
 }

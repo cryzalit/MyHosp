@@ -4,6 +4,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +83,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         dayMap.put("cardiologist", mContext.getResources().getDrawable(R.drawable.cardiologist));
         dayMap.put("CEO", mContext.getResources().getDrawable(R.drawable.ceo));
         dayMap.put("dermatologist", mContext.getResources().getDrawable(R.drawable.dermatologist));
+        dayMap.put("dentist", mContext.getResources().getDrawable(R.drawable.dentist));
         dayMap.put("dermatovenereologist", mContext.getResources().getDrawable(R.drawable.dermatovenereologist));
         dayMap.put("endocrinologist", mContext.getResources().getDrawable(R.drawable.endocrinologist));
         dayMap.put("endoscopist", mContext.getResources().getDrawable(R.drawable.endoscopist));
@@ -93,9 +95,11 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         dayMap.put("neurologist", mContext.getResources().getDrawable(R.drawable.neurologist));
         dayMap.put("ophthalmologist", mContext.getResources().getDrawable(R.drawable.ophthalmologist));
         dayMap.put("otolaryngologist", mContext.getResources().getDrawable(R.drawable.otolaryngologist));
+        dayMap.put("pediatrician", mContext.getResources().getDrawable(R.drawable.pediatrician));
         dayMap.put("physiotherapist", mContext.getResources().getDrawable(R.drawable.physiotherapist));
         dayMap.put("radiologist", mContext.getResources().getDrawable(R.drawable.radiologist));
         dayMap.put("rheumatologist", mContext.getResources().getDrawable(R.drawable.rheumatologist));
+        dayMap.put("physician", mContext.getResources().getDrawable(R.drawable.physician));
         dayMap.put("surgeon", mContext.getResources().getDrawable(R.drawable.surgeon));
         dayMap.put("urologist", mContext.getResources().getDrawable(R.drawable.urologist));
 
@@ -109,8 +113,13 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
         if (isExpanded) {
             grouplayout.setBackgroundResource(R.drawable.drawablelist_selected);
+            textGroup.setTextColor(Color.parseColor("#f6ff00"));
+
         } else {
             grouplayout.setBackgroundResource(R.drawable.drawableitem);
+            textGroup.setTextColor(Color.parseColor("#FFFFFFFF"));
+            textGroup.setAllCaps(true);
+
         }
 
 
@@ -149,8 +158,9 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
                 Intent intent = new Intent(mContext, DoctorProfile.class);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("id", mGroups.get(groupPosition).get(childPosition).getId() + "");
+                intent.putExtra("iddoctor", mGroups.get(groupPosition).get(childPosition).getId() + "");
                 intent.putExtra("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp() + "");
+                intent.putExtra("UID", mGroups.get(groupPosition).get(childPosition).getDoctorUID() + "");
                 intent.putExtra("name", mGroups.get(groupPosition).get(childPosition).getFullname());
                 intent.putExtra("spec", mGroups.get(groupPosition).get(childPosition).getSpec());
                 intent.putExtra("photo", mGroups.get(groupPosition).get(childPosition).getPhotoURL());
@@ -163,6 +173,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         return convertView;
 
     }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {

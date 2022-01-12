@@ -10,6 +10,7 @@ public class Doctor {
     String spec;
     String codespec;
     String photoURL;
+    String doctorUID;
 
 
     public double getPoint() {
@@ -17,6 +18,13 @@ public class Doctor {
         return point;
     }
 
+    public String getDoctorUID() {
+        return doctorUID;
+    }
+
+    public void setDoctorUID(String doctorUID) {
+        this.doctorUID = doctorUID;
+    }
 
     public Doctor getDoctorByID(int id) {
         if (this.getId() == id) {

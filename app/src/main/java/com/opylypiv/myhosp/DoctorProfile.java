@@ -1,8 +1,13 @@
 package com.opylypiv.myhosp;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,11 +40,16 @@ import java.util.Map;
 public class DoctorProfile extends AppCompatActivity {
     int currentiddoctor;
     String currentidhosp;
-    String currentfullname;
+    String currentnamedoctor;
+    String currentUID;
     String currentspec;
     String currentpoint;
-    int currentuser;
+    String currentuser;
     String currentphoto;
+
+    String user_name;
+    String user_email;
+    Uri user_photoUrl;
 
     EditText textcomment;
     RatingBar setpoint;
@@ -47,6 +59,9 @@ public class DoctorProfile extends AppCompatActivity {
     ListView listcomments;
     ArrayList<Comment> comments;
     Comment c;
+    static FirebaseUser user;
+    String uiduser;
+    Button send_comment;
 
 
     @Override
@@ -55,25 +70,26 @@ public class DoctorProfile extends AppCompatActivity {
 
         db_sendcoment = FirebaseFirestore.getInstance();
 
-
         setContentView(R.layout.activity_doctor_profile);
         TextView name = findViewById(R.id.name_doctor_profile);
         TextView profession = findViewById(R.id.profession_doctor_profile);
         RatingBar point = findViewById(R.id.ratingbar_doctror_profile);
         ImageView photo = findViewById(R.id.photo_doctor_profile);
-        Button send_comment = findViewById(R.id.send);
+        send_comment = findViewById(R.id.send);
         textcomment = findViewById(R.id.comment);
         setpoint = findViewById(R.id.setRating);
         listcomments = findViewById(R.id.listcomments);
         comments = new ArrayList<Comment>();
 
         Intent intent = getIntent();
-        currentiddoctor = Integer.parseInt(intent.getStringExtra("id"));
+        currentiddoctor = Integer.parseInt(intent.getStringExtra("iddoctor"));
         currentidhosp = intent.getStringExtra("idhosp");
+        currentUID = intent.getStringExtra("UID");
 
-        Log.d("currentiddoctor", currentiddoctor + "");
-        Log.d("currentidhosp", currentidhosp + "");
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            uiduser = user.getUid();
+        }
 
         getComments();
 
@@ -81,12 +97,15 @@ public class DoctorProfile extends AppCompatActivity {
             if (DoctorList.alldoctors.get(i).getId() == currentiddoctor) {
                 Log.d("Error", currentiddoctor + "");
                 currentdoc = DoctorList.alldoctors.get(i);
+                currentnamedoctor = DoctorList.alldoctors.get(i).getFullname() + "";
                 name.setText(DoctorList.alldoctors.get(i).getFullname() + "");
                 profession.setText(DoctorList.alldoctors.get(i).getSpec() + "");
                 point.setRating(Float.parseFloat(DoctorList.alldoctors.get(i).getPoint() + ""));
                 point.setStepSize(0.1f);
-
                 return;
+            } else if (DoctorList.alldoctors.get(i).getDoctorUID().equals(currentUID)) {
+                user_name = DoctorList.alldoctors.get(i).doctorUID;
+                Log.d("username", user_name);
             }
         }
     }
@@ -123,6 +142,7 @@ public class DoctorProfile extends AppCompatActivity {
     public void sendcomment(View v) {
         Date date = new Date();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        send_comment.setTextColor(Color.parseColor("#f6ff00"));
         Comment comment = new Comment();
         comment.setId(timestamp.getTime());
         comment.setText(textcomment.getText().toString().trim());
@@ -192,10 +212,97 @@ public class DoctorProfile extends AppCompatActivity {
 
     }
 
+    public void goLogin() {
 
-    public void goLogin(View view) {
         Intent intent = new Intent(this, SignInActivity.class);
+        intent.putExtra("iddoctor", currentiddoctor + "");
+        intent.putExtra("idhosp", currentidhosp + "");
+        intent.putExtra("UID", currentUID + "");
+
+        Log.d("iddoctor", currentiddoctor + "");
+        Log.d("idhosp", currentidhosp + "");
+        Log.d("UID", currentUID + "");
+
         startActivity(intent);
+    }
+
+    public void goMesseges(View v) {
+
+        Intent msg = new Intent(this, MessagesActivity.class);
+        msg.putExtra("iddoctor", currentiddoctor + "");
+        msg.putExtra("idhosp", currentidhosp + "");
+        msg.putExtra("UID", currentUID);
+        msg.putExtra("currentnamedoctor", currentnamedoctor);
+
+        Log.d("iddoctor", currentiddoctor + "");
+        Log.d("idhosp", currentidhosp + "");
+        Log.d("UID", currentUID + "");
+
+        startActivity(msg);
+
+    }
+
+    public void updateUI(FirebaseUser fuser) {
+
+        Log.d("iddoctor", currentiddoctor + "");
+        Log.d("idhosp", currentidhosp + "");
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Операции для выбранного пункта меню
+        switch (item.getItemId()) {
+            case R.id.massages:
+                item.setTitle(user_name);
+            case R.id.singoutitem:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(DoctorProfile.this, DoctorList.class));
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void getUserProfile() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            user_name = user.getDisplayName();
+            user_email = user.getEmail();
+            user_photoUrl = user.getPhotoUrl();
+            currentuser = user.getUid();
+            textcomment.setEnabled(true);
+            textcomment.setHint("Залиште відгук про лікаря");
+            send_comment.setText("ВІДПРАВИТИ");
+            boolean emailVerified = user.isEmailVerified();
+            String uid = user.getUid();
+        } else {
+            textcomment.setEnabled(false);
+            textcomment.setHint("Увійдіть. щоб залишити відгук");
+            send_comment.setText("УВІЙТИ");
+            send_comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goLogin();
+                }
+            });
+        }
+        // [END get_user_profile]
+    }
+
+    @Override
+    protected void onStart() {
+        getUserProfile();
+        super.onStart();
     }
 
 

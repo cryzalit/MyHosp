@@ -4,7 +4,7 @@ public class Comment {
     long id;
     String text;
     String point;
-    int iduser;
+    String iduser;
     int iddoctor;
     int idhosp;
     boolean answer;
@@ -50,11 +50,11 @@ public class Comment {
         this.point = point;
     }
 
-    public int getIduser() {
+    public String getIduser() {
         return iduser;
     }
 
-    public void setIduser(int iduser) {
+    public void setIduser(String iduser) {
         this.iduser = iduser;
     }
 

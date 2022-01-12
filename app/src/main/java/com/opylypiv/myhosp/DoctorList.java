@@ -1,6 +1,11 @@
 package com.opylypiv.myhosp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 import androidx.annotation.NonNull;
@@ -9,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,6 +32,7 @@ import java.util.Iterator;
 public class DoctorList extends AppCompatActivity {
     ExpandableListView listView;
     String line = "";
+    String user_name;
 
     FirebaseFirestore db;
     ArrayList<ArrayList<Doctor>> doctorgroups = new ArrayList<>();
@@ -72,13 +80,23 @@ public class DoctorList extends AppCompatActivity {
     ArrayList<Doctor> surgeon = new ArrayList<Doctor>();
     ArrayList<Doctor> urologist = new ArrayList<Doctor>();
 
+    FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_list);
         listView = findViewById(R.id.exListView);
-        FirebaseApp.initializeApp(this);
+        senddata();
+
+        if (user != null) {
+            String name = user.getDisplayName();
+            Log.d("nameuser", name);
+        } else {
+            Log.d("nameuser", "null");
+
+        }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("hosp_1")
@@ -254,6 +272,42 @@ public class DoctorList extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Операции для выбранного пункта меню
+        switch (item.getItemId()) {
+            case R.id.profile:
+
+            case R.id.massages:
+                return true;
+            case R.id.singoutitem:
+                item.setTitle("ВЫЙТИ");
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(DoctorList.this, SignInActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.profile);
+        if (user != null) {
+            user.getDisplayName();
+            item.setTitle(user_name);
+            invalidateOptionsMenu();
+        }
+        return true;
+    }
+
 
     public void senddata() {
         FirebaseFirestore db_send = FirebaseFirestore.getInstance();
@@ -274,6 +328,7 @@ public class DoctorList extends AppCompatActivity {
                 doctor.setPoint(Integer.parseInt(tokens[6]));
                 doctor.setPoints(Integer.parseInt(tokens[6]));
                 doctor.setSumpoints(Integer.parseInt(tokens[8]));
+                doctor.setDoctorUID(tokens[9]);
                 db_send.collection("hosp_1").document(doctor.getId() + "")
                         .set(doctor, SetOptions.merge());
 
@@ -284,4 +339,17 @@ public class DoctorList extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        FirebaseApp.initializeApp(this);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            user_name = user.getDisplayName();
+            invalidateOptionsMenu();
+        }
+        super.onStart();
+    }
+
+
 }
+
