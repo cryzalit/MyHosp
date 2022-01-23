@@ -103,9 +103,7 @@ public class DoctorProfile extends AppCompatActivity {
                 point.setRating(Float.parseFloat(DoctorList.alldoctors.get(i).getPoint() + ""));
                 point.setStepSize(0.1f);
                 return;
-            } else if (DoctorList.alldoctors.get(i).getDoctorUID().equals(currentUID)) {
-                user_name = DoctorList.alldoctors.get(i).doctorUID;
-                Log.d("username", user_name);
+
             }
         }
     }

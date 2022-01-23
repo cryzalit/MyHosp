@@ -57,11 +57,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
         if (isText) {
             viewHolder.messageTextView.setVisibility(View.VISIBLE);
-            viewHolder.photoImageView.setVisibility(View.GONE);
             viewHolder.messageTextView.setText(message.getText());
-            viewHolder.nameTextView.setText(message.getName());
         } else {
-            viewHolder.nameTextView.setText(message.getName());
             viewHolder.messageTextView.setVisibility(View.GONE);
             viewHolder.photoImageView.setVisibility(View.VISIBLE);
             Glide.with(viewHolder.photoImageView.getContext())

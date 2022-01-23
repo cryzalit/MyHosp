@@ -33,6 +33,7 @@ public class DoctorList extends AppCompatActivity {
     ExpandableListView listView;
     String line = "";
     String user_name;
+    String currentUID;
 
     FirebaseFirestore db;
     ArrayList<ArrayList<Doctor>> doctorgroups = new ArrayList<>();
@@ -81,6 +82,7 @@ public class DoctorList extends AppCompatActivity {
     ArrayList<Doctor> urologist = new ArrayList<Doctor>();
 
     FirebaseUser user;
+    static boolean isDoctor;
 
 
     @Override
@@ -268,8 +270,19 @@ public class DoctorList extends AppCompatActivity {
                         DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
                         listView.setAdapter(adapter);
 
+                        //Перевіряєм, чи юзер який увійшов є лікарем даного закладу.
+                        for (int i = 150; i > 0; --i) {
+                            if (DoctorList.alldoctors.get(i).getDoctorUID().equals(currentUID)) {
+                                user_name = DoctorList.alldoctors.get(i).getFullname();
+                                isDoctor = true;
+                                Log.d("username", user_name);
+                            }
+                        }
+
                     }
                 });
+
+
     }
 
     @Override
@@ -343,6 +356,7 @@ public class DoctorList extends AppCompatActivity {
     protected void onStart() {
         FirebaseApp.initializeApp(this);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        currentUID = user.getUid();
         if (user != null) {
             user_name = user.getDisplayName();
             invalidateOptionsMenu();
