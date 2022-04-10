@@ -16,14 +16,27 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.getstream.avatarview.AvatarView;
 
 public class DoctorListAdapter extends BaseExpandableListAdapter {
 
     private final ArrayList<ArrayList<Doctor>> mGroups;
     private final Context mContext;
+    ImageView imageprofile;
 
 
     public DoctorListAdapter(Context context, ArrayList<ArrayList<Doctor>> groups) {
@@ -80,7 +93,6 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         Map<String, Drawable> dayMap = new HashMap<>();
         dayMap.put("anesthesiologist", mContext.getResources().getDrawable(R.drawable.anesthesiologist));
         dayMap.put("bacteriologist", mContext.getResources().getDrawable(R.drawable.bacteriologist));
-        dayMap.put("cardiologist", mContext.getResources().getDrawable(R.drawable.cardiologist));
         dayMap.put("CEO", mContext.getResources().getDrawable(R.drawable.ceo));
         dayMap.put("dermatologist", mContext.getResources().getDrawable(R.drawable.dermatologist));
         dayMap.put("dentist", mContext.getResources().getDrawable(R.drawable.dentist));
@@ -109,23 +121,17 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
         textGroup.setText(mGroups.get(groupPosition).get(0).getSpec());
         imagegroup.setImageDrawable(dayMap.get(mGroups.get(groupPosition).get(0).codespec));
-        grouplayout.setPadding(5, 5, 5, 5);
 
         if (isExpanded) {
             grouplayout.setBackgroundResource(R.drawable.drawablelist_selected);
-            textGroup.setTextColor(Color.parseColor("#f6ff00"));
+            textGroup.setTextColor(Color.RED);
 
         } else {
             grouplayout.setBackgroundResource(R.drawable.drawableitem);
-            textGroup.setTextColor(Color.parseColor("#FFFFFFFF"));
-            textGroup.setAllCaps(true);
+            textGroup.setTextColor(Color.BLACK);
 
         }
-
-
         return convertView;
-
-
     }
 
 
@@ -137,10 +143,20 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.child_view, null);
         }
         LinearLayout child_item = convertView.findViewById(R.id.child_item);
-
         TextView doctor_fullname = convertView.findViewById(R.id.author_name);
         TextView doctor_pro = convertView.findViewById(R.id.profession_doctor);
         RatingBar point = convertView.findViewById(R.id.ratingbar_doctor);
+        AvatarView imageprofile = convertView.findViewById(R.id.profile_image);
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference pathReference = storageRef.child("hosp" + mGroups.get(groupPosition).get(childPosition).getIdhosp() + "/" + mGroups.get(groupPosition).get(childPosition).getId() + ".jpg");
+        Picasso picassoInstance = new Picasso.Builder(mContext.getApplicationContext())
+                .addRequestHandler(new FireBaseRequestHandler())
+                .build();
+        picassoInstance.load(pathReference + "").into(imageprofile);
+        Log.d("glide", pathReference + "");
+        Log.d("imageURL", mGroups.get(groupPosition).get(childPosition).getPhotoURL());
 
         doctor_fullname.setText(mGroups.get(groupPosition).get(childPosition).getFullname());
         doctor_pro.setText(mGroups.get(groupPosition).get(childPosition).getSpec());
@@ -148,9 +164,8 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         point.setStepSize(.1f);
         point.setRating(Float.parseFloat(mGroups.get(groupPosition).get(childPosition).getPoint() + ""));
         Log.d("point", Float.parseFloat(mGroups.get(groupPosition).get(childPosition).getPoint() + "") + "");
-
-
         Log.d("point", mGroups.get(groupPosition).get(childPosition).getPoint() + "");
+
 
         child_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,9 +189,25 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
     }
 
+    @GlideModule
+    public class MyAppGlideModule extends AppGlideModule {
+
+        @Override
+        public void registerComponents(Context context, Glide glide, Registry registry) {
+            // Register FirebaseImageLoader to handle StorageReference
+            registry.append(StorageReference.class, InputStream.class,
+                    new FirebaseImageLoader.Factory());
+        }
+    }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+
+
+
 }
+

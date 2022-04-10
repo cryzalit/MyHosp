@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -30,12 +30,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DoctorProfile extends AppCompatActivity {
     int currentiddoctor;
@@ -62,6 +67,7 @@ public class DoctorProfile extends AppCompatActivity {
     static FirebaseUser user;
     String uiduser;
     Button send_comment;
+    ImageButton messeges;
 
 
     @Override
@@ -70,21 +76,30 @@ public class DoctorProfile extends AppCompatActivity {
 
         db_sendcoment = FirebaseFirestore.getInstance();
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
         setContentView(R.layout.activity_doctor_profile);
         TextView name = findViewById(R.id.name_doctor_profile);
         TextView profession = findViewById(R.id.profession_doctor_profile);
         RatingBar point = findViewById(R.id.ratingbar_doctror_profile);
-        ImageView photo = findViewById(R.id.photo_doctor_profile);
+        CircleImageView avatarProfile = findViewById(R.id.photo_doctor_profile);
         send_comment = findViewById(R.id.send);
         textcomment = findViewById(R.id.comment);
         setpoint = findViewById(R.id.setRating);
         listcomments = findViewById(R.id.listcomments);
+        messeges = findViewById(R.id.massages);
+
         comments = new ArrayList<Comment>();
 
         Intent intent = getIntent();
         currentiddoctor = Integer.parseInt(intent.getStringExtra("iddoctor"));
         currentidhosp = intent.getStringExtra("idhosp");
         currentUID = intent.getStringExtra("UID");
+
+        Picasso picassoInstance = new Picasso.Builder(this.getApplicationContext())
+                .addRequestHandler(new FireBaseRequestHandler())
+                .build();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -102,6 +117,10 @@ public class DoctorProfile extends AppCompatActivity {
                 profession.setText(DoctorList.alldoctors.get(i).getSpec() + "");
                 point.setRating(Float.parseFloat(DoctorList.alldoctors.get(i).getPoint() + ""));
                 point.setStepSize(0.1f);
+
+                StorageReference pathReference = storageRef.child("hosp" + DoctorList.alldoctors.get(i).getIdhosp() + "/" + DoctorList.alldoctors.get(i).getId() + ".jpg");
+                picassoInstance.load(pathReference + "").into(avatarProfile);
+
                 return;
 
             }
@@ -283,10 +302,15 @@ public class DoctorProfile extends AppCompatActivity {
             send_comment.setText("ВІДПРАВИТИ");
             boolean emailVerified = user.isEmailVerified();
             String uid = user.getUid();
+            messeges.setVisibility(View.VISIBLE);
+
         } else {
+            setpoint.setEnabled(false);
             textcomment.setEnabled(false);
             textcomment.setHint("Увійдіть. щоб залишити відгук");
             send_comment.setText("УВІЙТИ");
+            messeges.setVisibility(View.GONE);
+
             send_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -356,11 +356,10 @@ public class DoctorList extends AppCompatActivity {
     protected void onStart() {
         FirebaseApp.initializeApp(this);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        currentUID = user.getUid();
-        if (user != null) {
-            user_name = user.getDisplayName();
-            invalidateOptionsMenu();
-        }
+         if (user != null) {
+             user_name = user.getDisplayName();
+             invalidateOptionsMenu();
+         }
         super.onStart();
     }
 

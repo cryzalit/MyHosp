@@ -9,7 +9,7 @@
         android:id="@+id/exListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F6F4F2"
+        android:background="@drawable/background_color"
         android:indicatorLeft="250dp"
         android:indicatorRight="300dp" />
 </LinearLayout>

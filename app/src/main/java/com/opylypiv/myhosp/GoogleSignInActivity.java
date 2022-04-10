@@ -1,6 +1,5 @@
 package com.opylypiv.myhosp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +32,6 @@ public class GoogleSignInActivity extends SignInActivity {
     // [START declare_auth]
     private FirebaseAuth mAuth;
     FirebaseUser mUser;
-    ProgressDialog progressDialog;
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -53,9 +51,6 @@ public class GoogleSignInActivity extends SignInActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Google sing in ....");
-        progressDialog.show();
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -75,7 +70,6 @@ public class GoogleSignInActivity extends SignInActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
-                progressDialog.dismiss();
                 finish();
 
             }
@@ -92,12 +86,10 @@ public class GoogleSignInActivity extends SignInActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            progressDialog.dismiss();
                             updateUI(user);
 
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            progressDialog.dismiss();
                             finish();
                             // If sign in fails, display a message to the user.
                             updateUI(null);

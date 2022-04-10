@@ -12,20 +12,36 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CommentsListAdapter extends BaseAdapter {
     Context ctx;
     LayoutInflater lInflater;
     ArrayList<Comment> comment;
+    Picasso picassoInstance;
+    FirebaseStorage storage;
+    StorageReference storageRef;
+
 
     CommentsListAdapter(Context context, ArrayList<Comment> comments) {
         ctx = context;
         comment = comments;
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        picassoInstance = new Picasso.Builder(ctx.getApplicationContext())
+                .addRequestHandler(new FireBaseRequestHandler())
+                .build();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
     }
+
 
     // кол-во элементов
     @Override
@@ -61,6 +77,11 @@ public class CommentsListAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.author_name)).setText(c.getIduser() + "");
         ((TextView) view.findViewById(R.id.comment)).setText(c.getText());
         ((RatingBar) view.findViewById(R.id.pointofexistcomment)).setRating(Float.parseFloat(c.getPoint()));
+        Log.d("storage", storageRef.child("hosp" + c.getIdhosp() + "/" + c.getIddoctor() + ".jpg") + "");
+        StorageReference pathReference = storageRef.child("hosp" + c.getIdhosp() + "/" + c.getIddoctor() + ".jpg");
+        picassoInstance.load(pathReference + "").into((CircleImageView) view.findViewById(R.id.avatar_doctor));
+
+
         Button answer = view.findViewById(R.id.answerbutton);
 
         Log.d("commment", c.getId() + "");
@@ -79,6 +100,7 @@ public class CommentsListAdapter extends BaseAdapter {
             Log.d("answer", c.getTextanswer() + "");
             Log.d("isanswer", c.isAnswer() + "");
 
+            ((TextView) view.findViewById(R.id.answer_comment)).setText(c.getTextanswer());
             ((TextView) view.findViewById(R.id.answer_comment)).setText(c.getTextanswer());
 
 
