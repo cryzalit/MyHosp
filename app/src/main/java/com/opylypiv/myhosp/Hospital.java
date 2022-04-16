@@ -2,7 +2,7 @@ package com.opylypiv.myhosp;
 
 public class Hospital {
     int id;
-    String nameorganisation;
+    String nameorganization;
     double latitude;
     double longitude;
     String type;
@@ -15,12 +15,12 @@ public class Hospital {
         this.id = id;
     }
 
-    public String getNameorganisation() {
-        return nameorganisation;
+    public String getNameorganization() {
+        return nameorganization;
     }
 
-    public void setNameorganisation(String nameorganisation) {
-        this.nameorganisation = nameorganisation;
+    public void setNameorganization(String nameorganization) {
+        this.nameorganization = nameorganization;
     }
 
     public double getLatitude() {

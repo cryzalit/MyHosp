@@ -115,7 +115,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
         dayMap.put("surgeon", mContext.getResources().getDrawable(R.drawable.surgeon));
         dayMap.put("urologist", mContext.getResources().getDrawable(R.drawable.urologist));
 
-        TextView textGroup = convertView.findViewById(R.id.textGroup);
+        TextView textGroup = convertView.findViewById(R.id.namaorganization);
         ImageView imagegroup = convertView.findViewById(R.id.imagegroup);
         LinearLayout grouplayout = convertView.findViewById(R.id.groplayout);
 

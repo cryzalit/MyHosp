@@ -58,5 +58,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:8.0.0'
     implementation "io.getstream:avatarview-coil:1.0.3"
 
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
 
 }

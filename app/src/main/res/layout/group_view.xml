@@ -21,7 +21,7 @@
         android:scaleType="centerInside" />
 
     <TextView
-        android:id="@+id/textGroup"
+        android:id="@+id/namaorganization"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
