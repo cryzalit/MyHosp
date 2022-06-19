@@ -1,35 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mygrey"
+    android:backgroundTint="@color/mygreen"
+    android:orientation="vertical"
+    android:padding="35dp"
     tools:context=".SignInActivity">
 
 
     <EditText
         android:id="@+id/emailEditText"
-        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:background="@color/white"
+        android:fontFamily="@font/robotor"
         android:hint="Ваш імейл"
         android:inputType="textEmailAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:padding="10dp"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:background="@color/white"
+        android:fontFamily="@font/robotor"
         android:hint="Придумайте пароль"
         android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:padding="10dp"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/repeatPasswordEditText"
-        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
+        android:background="@color/white"
+        android:fontFamily="@font/robotor"
         android:hint="Підтвердіть пароль"
         android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:padding="10dp"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,21 +56,21 @@
 
         <ImageButton
             android:id="@+id/loginfacebookButton"
-            android:layout_width="100dp"
-            android:layout_height="108dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|center_horizontal"
             android:layout_margin="50dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="1"
-            android:background="@drawable/facebook_icon_"
+            android:background="@drawable/facebook_icon"
             android:padding="25dp" />
 
         <ImageButton
             android:id="@+id/logingoogleButton"
-            android:layout_width="100dp"
-            android:layout_height="108dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|center_horizontal"
             android:layout_margin="50dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
@@ -63,12 +81,15 @@
 
     <Button
         android:id="@+id/loginSignUpButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
+        android:background="@color/white"
         android:text="Зареєструватись"
-        android:textSize="16sp"
+        android:textColor="@color/mygreen"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible" />
 
@@ -81,7 +102,8 @@
         android:clickable="true"
         android:onClick="toggleLoginMode"
         android:text="Увійти"
-        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
 </LinearLayout>

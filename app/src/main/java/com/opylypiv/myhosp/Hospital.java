@@ -4,7 +4,7 @@ public class Hospital {
     int id;
     String nameorganization;
     double latitude;
-    double longitude;
+    double longtitude;
     String type;
 
     public int getId() {
@@ -31,12 +31,12 @@ public class Hospital {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getLongtitude() {
+        return longtitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
     }
 
     public String getType() {

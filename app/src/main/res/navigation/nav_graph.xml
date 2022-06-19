@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentHospitalList">
+    <fragment
+        android:id="@+id/fragmentHospitalList"
+        android:name="com.opylypiv.myhosp.FragmentHospitalList"
+        android:label="@string/hospitallist_strings_ua"
+        tools:layout="@layout/fragment_hospital_list">
+        <action
+            android:id="@+id/action_fragmentHospitalList2_to_fragmentDoctorList"
+            app:destination="@id/fragmentDoctorList" />
+        <argument
+            android:name="currentlatitude"
+            app:argType="string"
+            android:defaultValue="0.0" />
+        <argument
+            android:name="currentlongtitude"
+            app:argType="string"
+            android:defaultValue='0.0' />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentDoctorList"
+        android:name="com.opylypiv.myhosp.FragmentDoctorList"
+        android:label="@string/doctrolist_strings_ua">
+        <action
+            android:id="@+id/action_fragmentDoctorList_to_fragmentDoctorProfile"
+            app:destination="@id/fragmentDoctorProfile" />
+        <argument
+            android:name="idhosp"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fragmentDoctorList_to_fragmentHospitalList"
+            app:destination="@id/fragmentHospitalList" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentDoctorProfile"
+        android:name="com.opylypiv.myhosp.FragmentDoctorProfile"
+        android:label="@string/profile_strings_ua"
+        tools:layout="@layout/fragment_doctor_profile" />
+
+</navigation>

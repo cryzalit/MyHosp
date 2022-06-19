@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1031991691303-o0cmkkn558061ci9iotrm19ikbnm8u1a.apps.googleusercontent.com",
+          "client_id": "1031991691303-msa1sitq06kvqvu4pdq57c3fg1fu4npr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.opylypiv.myhosp",
-            "certificate_hash": "e0f6553348bc163504d0c99c5245b0a467337a49"
+            "certificate_hash": "f4e6f5437e448cbe7c6292109d037a43fad1b91f"
           }
         },
         {

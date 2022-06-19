@@ -50,7 +50,6 @@ public class HospitalList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hospital_list);
         hospitallist = new ArrayList<>();
-        hospitallistview = findViewById(R.id.hospitallist);
 
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);

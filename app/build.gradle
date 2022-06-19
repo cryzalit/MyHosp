@@ -10,7 +10,7 @@ android {
     defaultConfig {
         multiDexEnabled true
         applicationId "com.opylypiv.myhosp"
-        minSdk 21
+        minSdk 23
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -46,19 +46,29 @@ dependencies {
     implementation 'com.facebook.android:facebook-login:12.2.0'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.android.gms:play-services-auth:20.1.0'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage'
-    implementation platform('com.google.firebase:firebase-bom:29.0.2')
-    implementation 'com.firebaseui:firebase-ui-database:8.0.0'
+    implementation platform('com.google.firebase:firebase-bom:29.3.1')
+    implementation 'com.google.firebase:firebase-dynamic-links'
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.firebaseui:firebase-ui-storage:8.0.0'
     implementation "io.getstream:avatarview-coil:1.0.3"
 
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.navigation:navigation-fragment:2.4.2"
+    implementation "androidx.navigation:navigation-ui:2.4.2"
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.4.2"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.4.2"
+    implementation "androidx.navigation:navigation-compose:2.4.2"
+
 
 
 }

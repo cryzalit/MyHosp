@@ -1,5 +1,6 @@
 package com.opylypiv.myhosp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,13 +10,16 @@ import android.view.MenuItem;
 import android.widget.ExpandableListView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,11 +33,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class DoctorList extends AppCompatActivity {
+public class DoctorList extends Activity {
     ExpandableListView listView;
     String line = "";
     String user_name;
     String currentUID;
+
+    String deepLink = null;
 
     FirebaseFirestore db;
     ArrayList<ArrayList<Doctor>> doctorgroups = new ArrayList<>();
@@ -84,13 +90,18 @@ public class DoctorList extends AppCompatActivity {
     FirebaseUser user;
     static boolean isDoctor;
 
+    String idhosp;
+
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_list);
+        intent = getIntent();
+        getInvitation();
         listView = findViewById(R.id.exListView);
-        senddata();
 
         if (user != null) {
             String name = user.getDisplayName();
@@ -100,8 +111,126 @@ public class DoctorList extends AppCompatActivity {
 
         }
 
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Операции для выбранного пункта меню
+        switch (item.getItemId()) {
+            case R.id.profile:
+
+            case R.id.massages:
+                return true;
+            case R.id.singoutitem:
+                item.setTitle("ВЫЙТИ");
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(DoctorList.this, SignInActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.mainmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.profile);
+        if (user != null) {
+            user.getDisplayName();
+            item.setTitle(user_name);
+            invalidateOptionsMenu();
+        }
+        return true;
+    }
+
+
+    public void senddata() {
+        FirebaseFirestore db_send = FirebaseFirestore.getInstance();
+
+        InputStream is = getResources().openRawResource(R.raw.myhosp_data);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("Windows-1251")));
+        try {
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.split(";");
+
+                Doctor doctor = new Doctor();
+                doctor.setId(Integer.parseInt(tokens[0]));
+                doctor.setIdhosp(Integer.parseInt(tokens[1]));
+                doctor.setFullname(tokens[2]);
+                doctor.setSpec(tokens[3]);
+                doctor.setCodespec(tokens[4]);
+                doctor.setPhotoURL(tokens[5]);
+                doctor.setPoint(Integer.parseInt(tokens[6]));
+                doctor.setPoints(Integer.parseInt(tokens[6]));
+                doctor.setSumpoints(Integer.parseInt(tokens[8]));
+                doctor.setDoctorUID(tokens[9]);
+                db_send.collection("hosp_1").document(doctor.getId() + "")
+                        .set(doctor, SetOptions.merge());
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        FirebaseApp.initializeApp(this);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            user_name = user.getDisplayName();
+            invalidateOptionsMenu();
+        }
+        super.onStart();
+    }
+
+    public void getInvitation() {
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink().getLastPathSegment() + "";
+                            idhosp = deepLink.replace("hosp", "");
+                            Log.i("hospital_id", idhosp + "");
+                            getdata();
+
+                        } else {
+                            Bundle extras = getIntent().getExtras();
+                            if (extras != null) {
+                                idhosp = extras.getString("idhosp");
+                                Log.i("hospital_id", idhosp + "");
+                                getdata();
+
+                            }
+                        }
+
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "getDynamicLink:onFailure", e);
+                    }
+                });
+        return;
+    }
+
+    public void getdata() {
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("hosp_1")
+        db.collection("hosp_" + idhosp)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -222,7 +351,6 @@ public class DoctorList extends AppCompatActivity {
                                         break;
                                 }
 
-
                             }
                             doctorgroups.add(anesthesiologist);
                             doctorgroups.add(bacteriologist);
@@ -263,106 +391,22 @@ public class DoctorList extends AppCompatActivity {
                                     it.remove();
                                 }
                             }
-
+                            for (int i = 150; i > 0; --i) {
+                                if (DoctorList.alldoctors.get(i).getDoctorUID().equals(currentUID)) {
+                                    user_name = DoctorList.alldoctors.get(i).getFullname();
+                                    isDoctor = true;
+                                    Log.d("username", user_name);
+                                }
+                            }
 
                         }
 
                         DoctorListAdapter adapter = new DoctorListAdapter(getApplicationContext(), doctorgroups);
                         listView.setAdapter(adapter);
 
-                        //Перевіряєм, чи юзер який увійшов є лікарем даного закладу.
-                        for (int i = 150; i > 0; --i) {
-                            if (DoctorList.alldoctors.get(i).getDoctorUID().equals(currentUID)) {
-                                user_name = DoctorList.alldoctors.get(i).getFullname();
-                                isDoctor = true;
-                                Log.d("username", user_name);
-                            }
-                        }
-
                     }
                 });
 
-
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Операции для выбранного пункта меню
-        switch (item.getItemId()) {
-            case R.id.profile:
-
-            case R.id.massages:
-                return true;
-            case R.id.singoutitem:
-                item.setTitle("ВЫЙТИ");
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(DoctorList.this, SignInActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.profile);
-        if (user != null) {
-            user.getDisplayName();
-            item.setTitle(user_name);
-            invalidateOptionsMenu();
-        }
-        return true;
-    }
-
-
-    public void senddata() {
-        FirebaseFirestore db_send = FirebaseFirestore.getInstance();
-
-        InputStream is = getResources().openRawResource(R.raw.myhosp_data);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("Windows-1251")));
-        try {
-            while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split(";");
-
-                Doctor doctor = new Doctor();
-                doctor.setId(Integer.parseInt(tokens[0]));
-                doctor.setIdhosp(Integer.parseInt(tokens[1]));
-                doctor.setFullname(tokens[2]);
-                doctor.setSpec(tokens[3]);
-                doctor.setCodespec(tokens[4]);
-                doctor.setPhotoURL(tokens[5]);
-                doctor.setPoint(Integer.parseInt(tokens[6]));
-                doctor.setPoints(Integer.parseInt(tokens[6]));
-                doctor.setSumpoints(Integer.parseInt(tokens[8]));
-                doctor.setDoctorUID(tokens[9]);
-                db_send.collection("hosp_1").document(doctor.getId() + "")
-                        .set(doctor, SetOptions.merge());
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    protected void onStart() {
-        FirebaseApp.initializeApp(this);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-         if (user != null) {
-             user_name = user.getDisplayName();
-             invalidateOptionsMenu();
-         }
-        super.onStart();
-    }
-
-
 }
 

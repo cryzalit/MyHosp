@@ -1,11 +1,9 @@
 package com.opylypiv.myhosp;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +35,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
     private final ArrayList<ArrayList<Doctor>> mGroups;
     private final Context mContext;
     ImageView imageprofile;
+    StorageReference pathReference;
 
 
     public DoctorListAdapter(Context context, ArrayList<ArrayList<Doctor>> groups) {
@@ -150,7 +149,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference pathReference = storageRef.child("hosp" + mGroups.get(groupPosition).get(childPosition).getIdhosp() + "/" + mGroups.get(groupPosition).get(childPosition).getId() + ".jpg");
+        pathReference = storageRef.child("hosp" + mGroups.get(groupPosition).get(childPosition).getIdhosp() + "/" + mGroups.get(groupPosition).get(childPosition).getId() + ".jpg");
         Picasso picassoInstance = new Picasso.Builder(mContext.getApplicationContext())
                 .addRequestHandler(new FireBaseRequestHandler())
                 .build();
@@ -171,18 +170,13 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(mContext, DoctorProfile.class);
-                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("iddoctor", mGroups.get(groupPosition).get(childPosition).getId() + "");
-                intent.putExtra("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp() + "");
-                intent.putExtra("UID", mGroups.get(groupPosition).get(childPosition).getDoctorUID() + "");
-                intent.putExtra("name", mGroups.get(groupPosition).get(childPosition).getFullname());
-                intent.putExtra("spec", mGroups.get(groupPosition).get(childPosition).getSpec());
-                intent.putExtra("photo", mGroups.get(groupPosition).get(childPosition).getPhotoURL());
-                intent.putExtra("point", mGroups.get(groupPosition).get(childPosition).getPoint() + "");
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp() + "");
+                bundle2.putString("iddoctor", mGroups.get(groupPosition).get(childPosition).getId() + "");
+                bundle2.putString("imagereference", pathReference.toString());
 
+                MainActivity.navController.navigate(R.id.fragmentDoctorProfile, bundle2);
 
-                mContext.startActivity(intent);
             }
         });
         return convertView;

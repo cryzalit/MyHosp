@@ -1,8 +1,8 @@
 package com.opylypiv.myhosp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +17,20 @@ public class HospitalListAdapter extends BaseAdapter {
     LayoutInflater lInflater;
     ArrayList<Hospital> hospital;
     Double current_latitude;
-    Double current_longtide;
+    Double current_longitude;
     Location locationc = new Location("point C");
     Location locationh = new Location("point H");
 
 
-    public HospitalListAdapter(Context context, Double latitude, Double longtidure, ArrayList<Hospital> hospitals) {
+    public HospitalListAdapter(Context context, Double latitude, Double longitude, ArrayList<Hospital> hospitals) {
         ctx = context;
         hospital = hospitals;
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         current_latitude = latitude;
-        current_longtide = longtidure;
+        current_longitude = longitude;
         locationc.setLatitude(current_latitude);
-        locationc.setLongitude(current_longtide);
+        locationc.setLongitude(current_longitude);
 
     }
 
@@ -69,10 +69,13 @@ public class HospitalListAdapter extends BaseAdapter {
 
         Hospital h = getHospital(position);
         ((TextView) view.findViewById(R.id.namaorganization)).setText(h.getNameorganization() + "");
-        locationh.setLongitude(h.getLongitude());
         locationh.setLatitude(h.getLatitude());
+        locationh.setLongitude(h.getLongtitude());
         float distance = locationc.distanceTo(locationh);
         ((TextView) view.findViewById(R.id.distance)).setText(distance / 1000.0 + "");
+
+        Log.d("locationh", locationh.toString() + "");
+        Log.d("locationc", locationc.toString() + "");
 
 
         Log.d("distance", distance + "");
@@ -80,10 +83,10 @@ public class HospitalListAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ctx, Answer.class);
-                intent.putExtra("id", h.getId() + "");
-                Log.d("id", h.getId() + "");
-                ctx.startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("idhosp", h.getId() + "");
+                MainActivity.navController.navigate(R.id.fragmentDoctorList, bundle);
+
             }
         });
 

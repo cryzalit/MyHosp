@@ -12,7 +12,7 @@
     android:weightSum="10">
 
     <ImageView
-        android:id="@+id/imagegroup"
+        android:id="@+id/search_doctor_avatar"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
@@ -29,7 +29,7 @@
         android:weightSum="8">
 
         <TextView
-            android:id="@+id/namaorganization"
+            android:id="@+id/search_doctor_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_vertical"
@@ -44,7 +44,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/distance"
+            android:id="@+id/search_doctor_spec"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal|top"

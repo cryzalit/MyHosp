@@ -5,10 +5,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,7 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,15 +41,34 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DoctorProfile extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link FragmentDoctorProfile#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class FragmentDoctorProfile extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
     int currentiddoctor;
     String currentidhosp;
     String currentnamedoctor;
-    String currentUID;
-    String currentspec;
-    String currentpoint;
+    String imagereference;
     String currentuser;
-    String currentphoto;
+
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    TextView name;
+    TextView profession;
+    RatingBar point;
+    CircleImageView avatarProfile;
 
     String user_name;
     String user_email;
@@ -60,7 +78,9 @@ public class DoctorProfile extends AppCompatActivity {
     RatingBar setpoint;
 
     Doctor currentdoc;
-    FirebaseFirestore db_sendcoment;
+
+    FirebaseFirestore db_profileandcomments;
+
     ListView listcomments;
     ArrayList<Comment> comments;
     Comment c;
@@ -68,68 +88,111 @@ public class DoctorProfile extends AppCompatActivity {
     String uiduser;
     Button send_comment;
     ImageButton messeges;
+    Picasso picassoInstance;
 
+
+    public FragmentDoctorProfile() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment FragmentDoctorProfiel.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static FragmentDoctorProfile newInstance(String param1, String param2) {
+        FragmentDoctorProfile fragment = new FragmentDoctorProfile();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
 
-        db_sendcoment = FirebaseFirestore.getInstance();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
+    }
 
-        setContentView(R.layout.fragment_doctor_profile);
-        TextView name = findViewById(R.id.name_doctor_profile);
-        TextView profession = findViewById(R.id.profession_doctor_profile);
-        RatingBar point = findViewById(R.id.ratingbar_doctror_profile);
-        CircleImageView avatarProfile = findViewById(R.id.photo_doctor_profile);
-        send_comment = findViewById(R.id.send);
-        textcomment = findViewById(R.id.comment);
-        setpoint = findViewById(R.id.setRating);
-        listcomments = findViewById(R.id.listcomments);
-        messeges = findViewById(R.id.massages);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_doctor_profile,
+                container, false);
+        db_profileandcomments = FirebaseFirestore.getInstance();
+
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+        name = view.findViewById(R.id.name_doctor_profile);
+        profession = view.findViewById(R.id.profession_doctor_profile);
+        point = view.findViewById(R.id.ratingbar_doctror_profile);
+        avatarProfile = view.findViewById(R.id.photo_doctor_profile);
+        send_comment = view.findViewById(R.id.send);
+        textcomment = view.findViewById(R.id.comment);
+        setpoint = (RatingBar) view.findViewById(R.id.setRating);
+        listcomments = view.findViewById(R.id.listcomments);
+        messeges = view.findViewById(R.id.massages);
 
         comments = new ArrayList<Comment>();
 
-        Intent intent = getIntent();
-        currentiddoctor = Integer.parseInt(intent.getStringExtra("iddoctor"));
-        currentidhosp = intent.getStringExtra("idhosp");
-        currentUID = intent.getStringExtra("UID");
 
-        Picasso picassoInstance = new Picasso.Builder(this.getApplicationContext())
+        currentiddoctor = Integer.parseInt(getArguments().getString("iddoctor"));
+        currentidhosp = getArguments().getString("idhosp");
+        imagereference = getArguments().getString("imagereference");
+
+        picassoInstance = new Picasso.Builder(this.getActivity().getApplicationContext())
                 .addRequestHandler(new FireBaseRequestHandler())
                 .build();
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            uiduser = user.getUid();
-        }
-
+        getProfile();
         getComments();
+        getUserProfile();
 
-        for (int i = 150; i > 0; --i) {
-            if (DoctorList.alldoctors.get(i).getId() == currentiddoctor) {
-                Log.d("Error", currentiddoctor + "");
-                currentdoc = DoctorList.alldoctors.get(i);
-                currentnamedoctor = DoctorList.alldoctors.get(i).getFullname() + "";
-                name.setText(DoctorList.alldoctors.get(i).getFullname() + "");
-                profession.setText(DoctorList.alldoctors.get(i).getSpec() + "");
-                point.setRating(Float.parseFloat(DoctorList.alldoctors.get(i).getPoint() + ""));
-                point.setStepSize(0.1f);
 
-                StorageReference pathReference = storageRef.child("hosp" + DoctorList.alldoctors.get(i).getIdhosp() + "/" + DoctorList.alldoctors.get(i).getId() + ".jpg");
-                picassoInstance.load(pathReference + "").into(avatarProfile);
+        return view;
 
-                return;
-
-            }
-        }
     }
+
+    public void getProfile() {
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("doctors")
+                .whereEqualTo("id", currentiddoctor)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                currentdoc = document.toObject(Doctor.class);
+                                name.setText(currentdoc.getFullname());
+                                profession.setText(currentdoc.getSpec());
+                                point.setRating(Float.parseFloat(currentdoc.getPoint() + ""));
+                                point.setMax(5);
+                                point.setStepSize(0.1f);
+                                picassoInstance.load(imagereference + "").into(avatarProfile);
+
+                                Log.d("CURRENTDOG", currentdoc.getFullname());
+                            }
+                        }
+                    }
+                });
+    }
+
 
     public void getComments() {
         c = new Comment();
-        db_sendcoment.collection("comments").whereEqualTo("iddoctor", currentiddoctor)
+        db_profileandcomments.collection("comments").whereEqualTo("iddoctor", currentiddoctor)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -141,7 +204,7 @@ public class DoctorProfile extends AppCompatActivity {
                                 comments.add(c);
 
                             }
-                            CommentsListAdapter cma = new CommentsListAdapter(DoctorProfile.this, comments);
+                            CommentsListAdapter cma = new CommentsListAdapter(getActivity(), comments);
                             listcomments.setAdapter(cma);
 
                         } else {
@@ -169,7 +232,7 @@ public class DoctorProfile extends AppCompatActivity {
         comment.setIduser(currentuser);
         comment.setTextanswer(null);
 
-        db_sendcoment.collection("comments").document(timestamp.getTime() + "")
+        db_profileandcomments.collection("comments").document(timestamp.getTime() + "")
                 .set(comment)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -184,14 +247,14 @@ public class DoctorProfile extends AppCompatActivity {
                     }
                 });
         setSetpoint();
-        onBackPressed();
+        getActivity().onBackPressed();
 
 
     }
 
     public void setSetpoint() {
 
-        DocumentReference docRef = db_sendcoment.collection("hosp_" + currentidhosp).document(currentiddoctor + "");
+        DocumentReference docRef = db_profileandcomments.collection("hosp_" + currentidhosp).document(currentiddoctor + "");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -214,11 +277,11 @@ public class DoctorProfile extends AppCompatActivity {
         newpoint.put("sumpoints", currentdoc.getSumpoints() + setpoint.getRating());
         newpoint.put("points", currentdoc.getPoints() + 1);
         answer.collection("hosp_" + currentidhosp).document(currentiddoctor + "").update(newpoint).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("Succes", "DocumentSnapshot successfully written!");
-            }
-        })
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Succes", "DocumentSnapshot successfully written!");
+                    }
+                })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -231,29 +294,25 @@ public class DoctorProfile extends AppCompatActivity {
 
     public void goLogin() {
 
-        Intent intent = new Intent(this, SignInActivity.class);
+        Intent intent = new Intent(getActivity(), SignInActivity.class);
         intent.putExtra("iddoctor", currentiddoctor + "");
         intent.putExtra("idhosp", currentidhosp + "");
-        intent.putExtra("UID", currentUID + "");
 
         Log.d("iddoctor", currentiddoctor + "");
         Log.d("idhosp", currentidhosp + "");
-        Log.d("UID", currentUID + "");
 
         startActivity(intent);
     }
 
     public void goMesseges(View v) {
 
-        Intent msg = new Intent(this, MessagesActivity.class);
+        Intent msg = new Intent(getActivity(), MessagesActivity.class);
         msg.putExtra("iddoctor", currentiddoctor + "");
         msg.putExtra("idhosp", currentidhosp + "");
-        msg.putExtra("UID", currentUID);
         msg.putExtra("currentnamedoctor", currentnamedoctor);
 
         Log.d("iddoctor", currentiddoctor + "");
         Log.d("idhosp", currentidhosp + "");
-        Log.d("UID", currentUID + "");
 
         startActivity(msg);
 
@@ -266,29 +325,6 @@ public class DoctorProfile extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Операции для выбранного пункта меню
-        switch (item.getItemId()) {
-            case R.id.massages:
-                item.setTitle(user_name);
-            case R.id.singoutitem:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(DoctorProfile.this, DoctorList.class));
-                return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     public void getUserProfile() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -320,12 +356,5 @@ public class DoctorProfile extends AppCompatActivity {
         }
         // [END get_user_profile]
     }
-
-    @Override
-    protected void onStart() {
-        getUserProfile();
-        super.onStart();
-    }
-
 
 }

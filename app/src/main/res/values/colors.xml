@@ -8,10 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#F5B935</color>
-    <color name="mygreen">#08836a</color>
+    <color name="mygreen">#0085b5</color>
     <color name="myred">#a90000</color>
     <color name="mywhitegreen">#79d1a6</color>
-    <color name="mygrey">#e6ebe6</color>
+    <color name="mygrey">#f4f4f4</color>
 
     <color name="transparent80">#CCffffff</color>
 
