@@ -3,28 +3,22 @@ package com.opylypiv.myhosp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -33,19 +27,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
@@ -67,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Hospital> hospitallist;
     ListView hospitallistview;
-    Double currentlatitude;
-    Double currentlongtitude;
+    static Double currentlatitude;
+    static Double currentlongtitude;
 
     private LocationRequest locationRequest;
     FirebaseUser user;
@@ -85,12 +71,19 @@ public class MainActivity extends AppCompatActivity {
     Intent intent;
     private Object FragmentHospitalList;
 
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         DrawerLayout dwl = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
         if (user != null) {
@@ -103,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+
         navController = navHostFragment.getNavController();
         new AppBarConfiguration.Builder(navController.getGraph()).build();
         setSupportActionBar(toolbar);
@@ -123,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
                 new AppBarConfiguration.Builder(navController.getGraph())
                         .setOpenableLayout(dwl)
                         .build();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            getLocation();
+        }
 
 
     }
@@ -164,8 +166,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("username", user_name);
             }
         }
-        return;
     }
+
+    private void getLocation() {
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                currentlatitude = location.getLatitude();
+                currentlongtitude = location.getLongitude();
+                // Use latitude and longitude
+            }
+        });
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -179,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         // Операции для выбранного пункта меню
         switch (item.getItemId()) {
             case R.id.profile:
-
+                return true;
             case R.id.massages:
                 return true;
             case R.id.singoutitem:
@@ -191,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -209,120 +220,18 @@ public class MainActivity extends AppCompatActivity {
             item.setTitle(user_name);
             invalidateOptionsMenu();
         }
-        SearchView searchView = (SearchView) item.getActionView();
         return true;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                getLocation();
-            }
-        }
-    }
-
-    public void getLocation() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                if (isGPSEnabled()) {
-                    LocationServices.getFusedLocationProviderClient(MainActivity.this)
-                            .requestLocationUpdates(locationRequest, new LocationCallback() {
-                                @Override
-                                public void onLocationResult(@NonNull LocationResult locationResult) {
-                                    super.onLocationResult(locationResult);
-
-                                    LocationServices.getFusedLocationProviderClient(MainActivity.this)
-                                            .removeLocationUpdates(this);
-                                    Log.d("Latitude", currentlatitude + "");
-                                    Log.d("longtitude", currentlongtitude + "");
-
-                                    if ((locationResult != null && locationResult.getLocations().size() > 0)) {
-
-                                        int index = locationResult.getLocations().size() - 1;
-                                        currentlatitude = Double.valueOf(locationResult.getLocations().get(index).getLatitude() + "");
-                                        currentlongtitude = Double.valueOf(locationResult.getLocations().get(index).getLongitude() + "");
-                                        Log.d("Latitude", currentlatitude + "");
-                                        Log.d("longtitude", currentlongtitude + "");
-
-
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("currentlatitude", currentlatitude + "");
-                                        bundle.putString("currentlongtitude", currentlongtitude + "");
-                                        navController.navigate(R.id.fragmentHospitalList, bundle);
-
-                                    }
-                                }
-                            }, Looper.getMainLooper());
-
-                } else {
-                    turnOnGPS();
-
-                }
-
-            } else {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
             }
-        }
-    }
-
-    private void turnOnGPS() {
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
-        builder.setAlwaysShow(true);
-
-        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
-                .checkLocationSettings(builder.build());
-
-        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-
-                try {
-                    LocationSettingsResponse response = task.getResult(ApiException.class);
-                    Toast.makeText(MainActivity.this, "GPS is already tured on", Toast.LENGTH_SHORT).show();
-
-                } catch (ApiException e) {
-
-                    switch (e.getStatusCode()) {
-                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-
-                            try {
-                                ResolvableApiException resolvableApiException = (ResolvableApiException) e;
-                                resolvableApiException.startResolutionForResult(MainActivity.this, 2);
-                            } catch (IntentSender.SendIntentException ex) {
-                                ex.printStackTrace();
-                            }
-                            break;
-
-                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            //Device does not have location
-                            break;
-                    }
-                }
-            }
-        });
 
     }
 
-    private boolean isGPSEnabled() {
-        LocationManager locationManager = null;
-        boolean isEnabled = false;
-
-        if (locationManager == null) {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        }
-
-        isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        return isEnabled;
-
-    }
 
 
 }

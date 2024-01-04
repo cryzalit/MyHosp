@@ -9,46 +9,11 @@
 
     tools:actionBarNavMode="standard">
 
-    <LinearLayout
-        android:id="@+id/groplayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/drawableitem"
-        android:orientation="horizontal"
-        android:padding="0dp"
-        android:scaleX="0.95"
-        android:scaleY="1.1"
-        android:weightSum="10">
-
-        <ImageView
-            android:id="@+id/imagegroup"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="3.3"
-            android:padding="5dp"
-            android:scaleType="centerInside" />
-
-        <TextView
-            android:id="@+id/namaorganizationr"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="6.7"
-            android:fontFamily="@font/roboto"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:padding="8dp"
-            android:textAllCaps="false"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
     <ExpandableListView
         android:id="@+id/exListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_color"
         android:indicatorLeft="250dp"
-        android:indicatorRight="300dp" />
+        android:indicatorRight="300dp"
+        android:padding="10dp" />
 </LinearLayout>

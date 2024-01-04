@@ -1,5 +1,6 @@
 package com.opylypiv.myhosp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.CallbackManager;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends Activity {
 
     private FirebaseAuth auth;
 

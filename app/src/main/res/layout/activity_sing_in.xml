@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mygrey"
-    android:backgroundTint="@color/mygreen"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
     android:orientation="vertical"
     android:padding="35dp"
     tools:context=".SignInActivity">

@@ -26,7 +26,7 @@ public class GoogleSignInActivity extends SignInActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 103;
-    String default_web_client_id = "1031991691303-jar1g0shna914pspocf39b7no1th43m1.apps.googleusercontent.com";
+    String default_web_client_id = "1031991691303-f6kgvit3d3sli3pngdfqcc0vo3f3qprn.apps.googleusercontent.com";
 
 
     // [START declare_auth]
@@ -100,7 +100,7 @@ public class GoogleSignInActivity extends SignInActivity {
 
 
     private void updateUI(FirebaseUser user) {
-        Intent intent = new Intent(GoogleSignInActivity.this, DoctorList.class);
+        Intent intent = new Intent(GoogleSignInActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 

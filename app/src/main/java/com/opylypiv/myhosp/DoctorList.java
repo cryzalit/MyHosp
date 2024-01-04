@@ -224,7 +224,6 @@ public class DoctorList extends Activity {
                         Log.w("TAG", "getDynamicLink:onFailure", e);
                     }
                 });
-        return;
     }
 
     public void getdata() {

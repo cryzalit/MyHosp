@@ -85,7 +85,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.group_view, null);
+            convertView = inflater.inflate(R.layout.group_item, null);
         }
 
 
@@ -123,11 +123,11 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
         if (isExpanded) {
             grouplayout.setBackgroundResource(R.drawable.drawablelist_selected);
-            textGroup.setTextColor(Color.RED);
+            textGroup.setTextColor(Color.parseColor("#048c4a"));
 
         } else {
             grouplayout.setBackgroundResource(R.drawable.drawableitem);
-            textGroup.setTextColor(Color.BLACK);
+            textGroup.setTextColor(Color.parseColor("#172175"));
 
         }
         return convertView;
@@ -139,7 +139,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.child_view, null);
+            convertView = inflater.inflate(R.layout.doctor_item, null);
         }
         LinearLayout child_item = convertView.findViewById(R.id.child_item);
         TextView doctor_fullname = convertView.findViewById(R.id.author_name);
@@ -173,7 +173,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp() + "");
                 bundle2.putString("iddoctor", mGroups.get(groupPosition).get(childPosition).getId() + "");
-                bundle2.putString("imagereference", pathReference.toString());
+                bundle2.putString("imagereference", pathReference + "");
 
                 MainActivity.navController.navigate(R.id.fragmentDoctorProfile, bundle2);
 

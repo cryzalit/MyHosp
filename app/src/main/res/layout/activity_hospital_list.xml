@@ -6,10 +6,5 @@
     android:orientation="vertical"
     tools:context=".HospitalList">
 
-    <ListView
-        android:id="@+id/hospitallist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
 
 </LinearLayout>

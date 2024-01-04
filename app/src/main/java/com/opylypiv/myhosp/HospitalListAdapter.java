@@ -72,7 +72,9 @@ public class HospitalListAdapter extends BaseAdapter {
         locationh.setLatitude(h.getLatitude());
         locationh.setLongitude(h.getLongtitude());
         float distance = locationc.distanceTo(locationh);
-        ((TextView) view.findViewById(R.id.distance)).setText(distance / 1000.0 + "");
+        String formattedNumber = String.format("%.1f", (distance / 1000));
+
+        ((TextView) view.findViewById(R.id.distance)).setText(formattedNumber + " км.");
 
         Log.d("locationh", locationh.toString() + "");
         Log.d("locationc", locationc.toString() + "");

@@ -11,15 +11,13 @@
         tools:layout="@layout/fragment_hospital_list">
         <action
             android:id="@+id/action_fragmentHospitalList2_to_fragmentDoctorList"
-            app:destination="@id/fragmentDoctorList" />
-        <argument
-            android:name="currentlatitude"
-            app:argType="string"
-            android:defaultValue="0.0" />
-        <argument
-            android:name="currentlongtitude"
-            app:argType="string"
-            android:defaultValue='0.0' />
+            app:destination="@id/fragmentDoctorList"
+
+            />
+
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="yourhosp.com/hospital/id/" />
     </fragment>
     <fragment
         android:id="@+id/fragmentDoctorList"
@@ -34,6 +32,9 @@
         <action
             android:id="@+id/action_fragmentDoctorList_to_fragmentHospitalList"
             app:destination="@id/fragmentHospitalList" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="yourhosp.com/doctor/id/" />
 
     </fragment>
     <fragment
@@ -41,5 +42,10 @@
         android:name="com.opylypiv.myhosp.FragmentDoctorProfile"
         android:label="@string/profile_strings_ua"
         tools:layout="@layout/fragment_doctor_profile" />
+    <activity
+        android:id="@+id/signInActivity"
+        android:name="com.opylypiv.myhosp.SignInActivity"
+        android:label="activity_sign_in"
+        tools:layout="@layout/activity_sign_in" />
 
 </navigation>

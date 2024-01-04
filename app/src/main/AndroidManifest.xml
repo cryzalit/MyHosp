@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.opylypiv.myhosp">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -30,10 +24,10 @@
         <activity
             android:name=".HospitalList"
             android:exported="false" />
-        <activity android:name=".MessagesActivity"></activity>
-        <activity android:name=".SignInActivity"></activity>
-        <activity android:name=".GoogleSignInActivity"></activity>
-        <activity android:name=".Answer"></activity>
+        <activity android:name=".MessagesActivity" />
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".GoogleSignInActivity" />
+        <activity android:name=".Answer" />
         <activity
             android:name=".DoctorProfile"
             android:windowSoftInputMode="adjustPan" />
@@ -42,13 +36,13 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="YourHOSP"
-            android:screenOrientation="sensorPortrait">
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FacebookSignIn"></activity>
+        <activity android:name=".FacebookSignIn" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

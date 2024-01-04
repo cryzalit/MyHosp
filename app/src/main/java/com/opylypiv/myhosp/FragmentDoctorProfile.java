@@ -50,18 +50,18 @@ public class FragmentDoctorProfile extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "idhosp";
+    private static final String ARG_PARAM2 = "iddoc";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String idhosp;
+    private String iddoc;
 
     int currentiddoctor;
-    String currentidhosp;
-    String currentnamedoctor;
+
+    String namedoctor;
     String imagereference;
-    String currentuser;
+    String currentuseruser;
 
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -79,7 +79,7 @@ public class FragmentDoctorProfile extends Fragment {
 
     Doctor currentdoc;
 
-    FirebaseFirestore db_profileandcomments;
+    FirebaseFirestore db_profile;
 
     ListView listcomments;
     ArrayList<Comment> comments;
@@ -88,7 +88,6 @@ public class FragmentDoctorProfile extends Fragment {
     String uiduser;
     Button send_comment;
     ImageButton messeges;
-    Picasso picassoInstance;
 
 
     public FragmentDoctorProfile() {
@@ -117,9 +116,10 @@ public class FragmentDoctorProfile extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            idhosp = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
 
 
     }
@@ -130,7 +130,7 @@ public class FragmentDoctorProfile extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctor_profile,
                 container, false);
-        db_profileandcomments = FirebaseFirestore.getInstance();
+        db_profile = FirebaseFirestore.getInstance();
 
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
@@ -147,26 +147,26 @@ public class FragmentDoctorProfile extends Fragment {
         comments = new ArrayList<Comment>();
 
 
-        currentiddoctor = Integer.parseInt(getArguments().getString("iddoctor"));
-        currentidhosp = getArguments().getString("idhosp");
+        iddoctor = Integer.parseInt(getArguments().getString("iddoctor"));
+        idhosp = getArguments().getString("idhosp");
         imagereference = getArguments().getString("imagereference");
 
-        picassoInstance = new Picasso.Builder(this.getActivity().getApplicationContext())
+        Picasso picassoInstance = new Picasso.Builder(this.getActivity().getApplicationContext())
                 .addRequestHandler(new FireBaseRequestHandler())
                 .build();
         getProfile();
         getComments();
         getUserProfile();
 
-
         return view;
 
     }
 
     public void getProfile() {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("doctors")
+        Picasso picassoInstance = new Picasso.Builder(this.getActivity().getApplicationContext())
+                .addRequestHandler(new FireBaseRequestHandler())
+                .build();
+        db_profile.collection("doctors")
                 .whereEqualTo("id", currentiddoctor)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -174,25 +174,34 @@ public class FragmentDoctorProfile extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                currentdoc = document.toObject(Doctor.class);
-                                name.setText(currentdoc.getFullname());
-                                profession.setText(currentdoc.getSpec());
-                                point.setRating(Float.parseFloat(currentdoc.getPoint() + ""));
-                                point.setMax(5);
-                                point.setStepSize(0.1f);
-                                picassoInstance.load(imagereference + "").into(avatarProfile);
+                                if (document.exists()) {
+                                    currentdoc = document.toObject(Doctor.class);
+                                    name.setText(currentdoc.getFullname());
+                                    profession.setText(currentdoc.getSpec());
+                                    point.setRating(Float.parseFloat(currentdoc.getPoint() + ""));
+                                    point.setMax(5);
+                                    point.setStepSize(0.1f);
+                                    picassoInstance.load(imagereference + "").into(avatarProfile);
 
-                                Log.d("CURRENTDOG", currentdoc.getFullname());
+
+                                    Log.d("CURRENTDOG", currentdoc.getFullname());
+                                } else {
+                                    Log.d("FIREBASEPROBLEM", "get failed with ", task.getException());
+
+                                }
                             }
                         }
                     }
+
+
                 });
     }
 
 
+
     public void getComments() {
         c = new Comment();
-        db_profileandcomments.collection("comments").whereEqualTo("iddoctor", currentiddoctor)
+        db_profile.collection("comments").whereEqualTo("iddoctor", currentiddoctor)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -232,7 +241,7 @@ public class FragmentDoctorProfile extends Fragment {
         comment.setIduser(currentuser);
         comment.setTextanswer(null);
 
-        db_profileandcomments.collection("comments").document(timestamp.getTime() + "")
+        db_profile.collection("comments").document(timestamp.getTime() + "")
                 .set(comment)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -254,7 +263,7 @@ public class FragmentDoctorProfile extends Fragment {
 
     public void setSetpoint() {
 
-        DocumentReference docRef = db_profileandcomments.collection("hosp_" + currentidhosp).document(currentiddoctor + "");
+        DocumentReference docRef = db_profile.collection("hosp_" + currentidhosp).document(currentiddoctor + "");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -16,16 +16,16 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar_author"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:maxHeight="150dp"
-                android:minHeight="30dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:maxWidth="100dp"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/author_name"
@@ -39,7 +39,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="6"
+            android:layout_weight="7"
             android:orientation="vertical"
             android:weightSum="6">
 
@@ -87,7 +87,7 @@
     <LinearLayout
         android:id="@+id/ll_answer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:orientation="horizontal"
         android:paddingStart="25dp"
         android:weightSum="9">
@@ -104,9 +104,9 @@
                 android:id="@+id/avatar_doctor"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_gravity="center|center_horizontal"
+                android:layout_gravity="center_horizontal"
                 android:layout_weight="2"
-                android:maxWidth="200dp"
+                android:maxWidth="150dp"
                 android:padding="5dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
@@ -117,7 +117,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
                 android:foregroundGravity="center_vertical"
-                android:gravity="left|center_vertical"
+                android:gravity="center_horizontal"
                 android:text="TextView" />
         </LinearLayout>
 

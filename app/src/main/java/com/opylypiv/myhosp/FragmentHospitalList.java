@@ -15,13 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
@@ -41,8 +35,8 @@ public class FragmentHospitalList extends Fragment {
     private Double mParam2;
 
     ListView hospitallistview;
-    Double currentlatitude;
-    Double currentlongtitude;
+    String currentlatitude;
+    String currentlongtitude;
 
     public FragmentHospitalList() {
         // Required empty public constructor
@@ -64,16 +58,21 @@ public class FragmentHospitalList extends Fragment {
         args.putDouble(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            currentlatitude = getArguments().getDouble(ARG_PARAM1);
-            currentlongtitude = getArguments().getDouble(ARG_PARAM2);
+            currentlatitude = getArguments().getString(ARG_PARAM1);
+            currentlongtitude = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,7 +86,6 @@ public class FragmentHospitalList extends Fragment {
 
         return view;
     }
-
     public void getNearHospitals() {
         ArrayList<Hospital> hospitallist = new ArrayList<Hospital>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -100,6 +98,10 @@ public class FragmentHospitalList extends Fragment {
                             Log.d("succeschechfirebase", task.isSuccessful() + "");
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
+                                Double currentlatitude = MainActivity.currentlatitude;
+                                Double currentlongtitude = MainActivity.currentlongtitude;
+
+
                                 Hospital hospital = document.toObject(Hospital.class);
                                 hospitallist.add(hospital);
                                 HospitalListAdapter hla = new HospitalListAdapter(getActivity(), currentlatitude, currentlongtitude, hospitallist);
@@ -109,42 +111,14 @@ public class FragmentHospitalList extends Fragment {
                         }
                     }
                 });
-    }
-
-    public void senddata() {
-        FirebaseFirestore db_send = FirebaseFirestore.getInstance();
-        String line;
-
-        InputStream is = getResources().openRawResource(R.raw.myhosp_data);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("Windows-1251")));
-        try {
-            while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split(";");
-
-                Doctor doctor = new Doctor();
-                doctor.setId(Integer.parseInt(tokens[0]));
-                doctor.setIdhosp(Integer.parseInt(tokens[1]));
-                doctor.setFullname(tokens[2]);
-                doctor.setSpec(tokens[3]);
-                doctor.setCodespec(tokens[4]);
-                doctor.setPhotoURL(tokens[5]);
-                doctor.setPoint(Integer.parseInt(tokens[6]));
-                doctor.setPoints(Integer.parseInt(tokens[6]));
-                doctor.setSumpoints(Integer.parseInt(tokens[8]));
-                doctor.setDoctorUID(tokens[9]);
-                db_send.collection("doctors").document(doctor.getId() + "")
-                        .set(doctor, SetOptions.merge());
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
+
 
     @Override
     public void onPause() {
 
         super.onPause();
     }
+
 }

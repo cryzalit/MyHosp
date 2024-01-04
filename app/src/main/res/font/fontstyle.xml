@@ -2,8 +2,8 @@
 <font-family xmlns:android="http://schemas.android.com/apk/res/android">
     <font
         android:fontStyle="normal"
-        android:fontWeight="400"
-        android:font="@font/robotor" />
+        android:fontWeight="700"
+        android:font="@font/comfort_bold" />
     <font
         android:fontStyle="italic"
         android:fontWeight="400"

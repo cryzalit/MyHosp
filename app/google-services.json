@@ -15,28 +15,24 @@
       },
       "oauth_client": [
         {
-          "client_id": "1031991691303-msa1sitq06kvqvu4pdq57c3fg1fu4npr.apps.googleusercontent.com",
+          "client_id": "1031991691303-admbp5lcok78lsoo5vta7d269nq2cdvh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.opylypiv.myhosp",
             "certificate_hash": "f4e6f5437e448cbe7c6292109d037a43fad1b91f"
           }
-        },
-        {
-          "client_id": "1031991691303-qhclio8obuqg64c3omijhh7hur9855p9.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCzx_H6AvbBbfaJTwt6q162D-9sBEHjB3M"
+          "current_key": "AIzaSyAUftBSqpSCVwamxW26-3ib3Fe8e3fv_bw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1031991691303-jar1g0shna914pspocf39b7no1th43m1.apps.googleusercontent.com",
+              "client_id": "1031991691303-f6kgvit3d3sli3pngdfqcc0vo3f3qprn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
