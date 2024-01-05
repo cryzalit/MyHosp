@@ -61,7 +61,7 @@ public class FragmentDoctorProfile extends Fragment {
 
     String namedoctor;
     String imagereference;
-    String currentuseruser;
+    String currentuser;
 
     FirebaseStorage storage;
     StorageReference storageRef;
@@ -117,10 +117,8 @@ public class FragmentDoctorProfile extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             idhosp = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            iddoc = getArguments().getString(ARG_PARAM2);
         }
-
-
 
     }
 
@@ -146,9 +144,6 @@ public class FragmentDoctorProfile extends Fragment {
 
         comments = new ArrayList<Comment>();
 
-
-        iddoctor = Integer.parseInt(getArguments().getString("iddoctor"));
-        idhosp = getArguments().getString("idhosp");
         imagereference = getArguments().getString("imagereference");
 
         Picasso picassoInstance = new Picasso.Builder(this.getActivity().getApplicationContext())
@@ -163,11 +158,12 @@ public class FragmentDoctorProfile extends Fragment {
     }
 
     public void getProfile() {
+
         Picasso picassoInstance = new Picasso.Builder(this.getActivity().getApplicationContext())
                 .addRequestHandler(new FireBaseRequestHandler())
                 .build();
         db_profile.collection("doctors")
-                .whereEqualTo("id", currentiddoctor)
+                .whereEqualTo("id", iddoc)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -263,7 +259,7 @@ public class FragmentDoctorProfile extends Fragment {
 
     public void setSetpoint() {
 
-        DocumentReference docRef = db_profile.collection("hosp_" + currentidhosp).document(currentiddoctor + "");
+        DocumentReference docRef = db_profile.collection("hosp_" + idhosp).document(iddoc);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -285,7 +281,7 @@ public class FragmentDoctorProfile extends Fragment {
         Map<String, Object> newpoint = new HashMap<>();
         newpoint.put("sumpoints", currentdoc.getSumpoints() + setpoint.getRating());
         newpoint.put("points", currentdoc.getPoints() + 1);
-        answer.collection("hosp_" + currentidhosp).document(currentiddoctor + "").update(newpoint).addOnSuccessListener(new OnSuccessListener<Void>() {
+        answer.collection("hosp_" +idhosp).document(currentiddoctor + "").update(newpoint).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("Succes", "DocumentSnapshot successfully written!");
@@ -305,10 +301,10 @@ public class FragmentDoctorProfile extends Fragment {
 
         Intent intent = new Intent(getActivity(), SignInActivity.class);
         intent.putExtra("iddoctor", currentiddoctor + "");
-        intent.putExtra("idhosp", currentidhosp + "");
+        intent.putExtra("idhosp", idhosp + "");
 
         Log.d("iddoctor", currentiddoctor + "");
-        Log.d("idhosp", currentidhosp + "");
+        Log.d("idhosp", idhosp + "");
 
         startActivity(intent);
     }
@@ -317,11 +313,11 @@ public class FragmentDoctorProfile extends Fragment {
 
         Intent msg = new Intent(getActivity(), MessagesActivity.class);
         msg.putExtra("iddoctor", currentiddoctor + "");
-        msg.putExtra("idhosp", currentidhosp + "");
-        msg.putExtra("currentnamedoctor", currentnamedoctor);
+        msg.putExtra("idhosp", idhosp + "");
+        msg.putExtra("currentnamedoctor", namedoctor);
 
         Log.d("iddoctor", currentiddoctor + "");
-        Log.d("idhosp", currentidhosp + "");
+        Log.d("idhosp", idhosp + "");
 
         startActivity(msg);
 
@@ -330,7 +326,7 @@ public class FragmentDoctorProfile extends Fragment {
     public void updateUI(FirebaseUser fuser) {
 
         Log.d("iddoctor", currentiddoctor + "");
-        Log.d("idhosp", currentidhosp + "");
+        Log.d("idhosp", idhosp + "");
 
     }
 

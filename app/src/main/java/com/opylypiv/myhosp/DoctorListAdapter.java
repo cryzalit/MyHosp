@@ -172,7 +172,7 @@ public class DoctorListAdapter extends BaseExpandableListAdapter {
 
                 Bundle bundle2 = new Bundle();
                 bundle2.putString("idhosp", mGroups.get(groupPosition).get(childPosition).getIdhosp() + "");
-                bundle2.putString("iddoctor", mGroups.get(groupPosition).get(childPosition).getId() + "");
+                bundle2.putString("iddoc", mGroups.get(groupPosition).get(childPosition).getId() + "");
                 bundle2.putString("imagereference", pathReference + "");
 
                 MainActivity.navController.navigate(R.id.fragmentDoctorProfile, bundle2);
